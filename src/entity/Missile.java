@@ -70,6 +70,7 @@ public class Missile extends Entity {
     public void draw(Graphics g) {
         if (!exploding){
             g.drawImage(missileImg, x, y, missileWidth, missileHeight, null);
+
         }
 
         if (explosion != null){
@@ -102,10 +103,15 @@ public class Missile extends Entity {
         return exploding;
     }
 
-    public void setExplosion(){
-        exploding = true;
-    }
+    public void triggerExplosion(){
 
+        if(!exploding){
+
+            exploding = true;
+
+            explode();
+        }
+    }
     public boolean isFinished(){
         return finished;
     }
@@ -131,12 +137,7 @@ public class Missile extends Entity {
                 missileHeight
         );
 
-        Rectangle planeBounds = new Rectangle(
-                plane.getX(),
-                plane.getY(),
-                plane.getWidth(),
-                plane.getHeight()
-        );
+        Rectangle planeBounds = plane.getHitbox();
 
         return missileBounds.intersects(planeBounds);
     }

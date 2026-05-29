@@ -48,45 +48,10 @@ public class Session {
     }
 
     public void update(KeyHandler keyH){
-        // =========================
-        // INPUT
-        // =========================
-
-        int dx = 0;
-        int dy = 0;
-
-        if(keyH.upPressed){
-            dy--;
-        }
-
-        if(keyH.downPressed){
-            dy++;
-        }
-
-        if(keyH.leftPressed){
-            dx--;
-        }
-
-        if(keyH.rightPressed){
-            dx++;
-        }
-
-        plane.move(dx, dy);
-
-        plane.update();
-
-
-        // =========================
-        // UPDATE SQUADRON
-        // =========================
-
+        movementInput(keyH);
         squadron.update();
 
-
-        // =========================
-        // DRONES SHOOT
-        // =========================
-
+        //Logica De Disparo, Hay que incluirla en drones
         for(Drone drone : squadron.getDrones()){
 
             if(drone.canShoot()){
@@ -104,73 +69,9 @@ public class Session {
             }
         }
 
+        updateMissiles();
 
-        // =========================
-        // UPDATE MISSILES
-        // =========================
-
-        for(int i = 0; i < missiles.size(); i++){
-
-            Missile missile = missiles.get(i);
-
-            missile.update();
-
-            if(!missile.isExploding()
-                    && missile.collidesWith(plane)){
-
-                missile.explode();
-
-                missile.setExplosion();
-            }
-
-            if(missile.isExploding() && !missile.isDamageApplied()){
-
-                int damage =
-                        missile.getExplosion()
-                                .calculateDamage(plane);
-
-                plane.reduceEnergy(damage);
-
-                player.calculateScore(damage);
-
-                missile.setDamageApplied(true);
-
-                if (plane.getCurrentEnergy() <= 0){
-
-                    if (player.getLives() > 0){
-
-                        player.loseLife();
-
-                        plane.restoreEnergy();
-
-                    } else {
-
-                        gameState = GameState.Game_Over;
-                    }
-                }
-            }
-
-            if(missile.isFinished()){
-
-                missiles.remove(i);
-
-                i--;
-            }
-
-        }
-
-
-        // =========================
-        // NEXT LEVEL
-        // =========================
-
-        if(squadron.levelFinished()){
-            currentLevel = new Level(
-                    currentLevel.getLevelNumber() + 1
-            );
-            player.addScore(300);
-            startLevel();
-        }
+        checkNextLevel();
     }
 
     public void draw(Graphics g){
@@ -309,22 +210,7 @@ public class Session {
         return screenWidth / 2 - textLength / 2;
     }
 
-    public GameState getGameState(){
-        return gameState;
-    }
 
-    public void startNewGame(){
-
-        player = new Player();
-
-        currentLevel = new Level(1);
-
-        plane.setDefaultValues();
-
-        startLevel();
-
-        gameState = GameState.Running;
-    }
 
     public void drawEnergyBar(Graphics2D g2){
 
@@ -407,4 +293,129 @@ public class Session {
         );
     }
 
+
+    public void movementInput(KeyHandler keyH){
+        int dx = 0;
+        int dy = 0;
+
+        if(keyH.upPressed){
+            dy--;
+        }
+
+        if(keyH.downPressed){
+            dy++;
+        }
+
+        if(keyH.leftPressed){
+            dx--;
+        }
+
+        if(keyH.rightPressed){
+            dx++;
+        }
+
+        plane.move(dx, dy);
+
+        plane.update();
+    }
+
+
+
+    public void updateMissiles(){
+        for(int i = 0; i < missiles.size(); i++){
+            Missile missile = missiles.get(i);
+
+            missile.update();
+
+            explosionDamage(missile);
+
+            if (removeMissile(missile, i)){
+                i--;
+            }
+
+        }
+
+    }
+
+
+    public Missile explosionDamage(Missile missile){
+        if(!missile.isExploding()
+                && missile.collidesWith(plane)){
+
+            missile.triggerExplosion();
+
+            // evita daño de explosión extra
+            missile.setDamageApplied(true);
+
+            player.loseLife();
+            playerNextLife();
+        }
+
+        if(missile.isExploding()
+                && !missile.isDamageApplied()){
+
+            int damage =
+                    missile.getExplosion()
+                            .calculateDamage(plane);
+
+            plane.reduceEnergy(damage);
+
+            player.calculateScore(damage);
+
+            missile.setDamageApplied(true);
+
+            if(plane.getCurrentEnergy() <= 0){
+
+                player.loseLife();
+                playerNextLife();
+            }
+
+        }
+        return missile;
+    }
+
+    public boolean removeMissile(Missile missile, int i){
+        if(missile.isFinished()){
+
+            missiles.remove(i);
+            return true;
+        }
+        return false;
+    }
+
+    public void playerNextLife(){
+        if(player.getLives() > 0){
+
+            plane.restoreEnergy();
+
+        } else {
+
+            gameState = GameState.Game_Over;
+        }
+    }
+
+    public void checkNextLevel(){
+        if(squadron.levelFinished() && currentLevel.getLevelNumber() <= 5){
+            currentLevel.nextLevel();
+            player.addScore(300);
+            startLevel();
+        }
+    }
+
+    public GameState getGameState(){
+        return gameState;
+    }
+
+    public void startNewGame(){
+
+        player = new Player();
+
+        currentLevel = new Level(1);
+
+        plane.setDefaultValues();
+
+        startLevel();
+
+        gameState = GameState.Running;
+    }
 }

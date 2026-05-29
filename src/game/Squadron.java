@@ -15,6 +15,8 @@ public class Squadron {
 
     Level level;
 
+    boolean isInfinite;
+
     public Squadron(int screenWidth, Level level){
 
         this.screenWidth = screenWidth;
@@ -24,6 +26,9 @@ public class Squadron {
         drones = new ArrayList<>();
 
         dronesRemaining = 10;
+
+        isInfinite = (level.getLevelNumber() < 5) ? false : true;
+
     }
 
     public void update(){
@@ -34,11 +39,13 @@ public class Squadron {
 
         if(spawnCounter >= 100){
 
-            if(drones.size() < 4 && dronesRemaining > 0){
+            if(drones.size() < 4 && (dronesRemaining > 0 || isInfinite)) {
 
                 spawnDrone();
 
-                dronesRemaining--;
+                if (!isInfinite) {
+                    dronesRemaining--;
+                }
             }
 
             spawnCounter = 0;
@@ -98,6 +105,6 @@ public class Squadron {
     }
 
     public boolean levelFinished(){
-        return dronesRemaining == 0 && drones.isEmpty();
+        return (dronesRemaining == 0 && drones.isEmpty() && !isInfinite);
     }
 }

@@ -6,7 +6,7 @@ public class Player {
     int nextLife = 1000;
 
     public Player(){
-        this.lives = 0;
+        this.lives = 10;
         this.score = 0;
     }
 

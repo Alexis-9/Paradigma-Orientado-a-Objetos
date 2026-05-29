@@ -1,4 +1,4 @@
-import gui.GamePanel;
+/*import gui.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,5 +23,15 @@ public class Main {
         gamePanel.startGameThread();
 
 
+    }
+}*/
+
+import gui.Menu;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        new Menu();
     }
 }

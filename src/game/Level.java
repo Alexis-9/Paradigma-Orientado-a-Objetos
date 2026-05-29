@@ -14,11 +14,22 @@ public class Level {
 
         this.levelNumber = levelNumber;
 
-        droneSpeed = (int)(2 * Math.pow(1.15, levelNumber - 1));
+        droneSpeed = 2;
 
-        missileSpeed = (int)(4 * Math.pow(1.15, levelNumber - 1));
+        missileSpeed = 4;
 
-        shootCooldown = (int)(120 * Math.pow(0.85, levelNumber - 1));
+        shootCooldown = 120;
+    }
+
+    public void nextLevel() {
+
+        levelNumber++;
+
+        droneSpeed = (int)(droneSpeed * 1.15);
+
+        missileSpeed = (int)(missileSpeed * 1.15);
+
+        shootCooldown = (int)(shootCooldown * 0.85);
     }
 
     public int getDroneSpeed() {

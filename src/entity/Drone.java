@@ -12,7 +12,7 @@ public class Drone extends Entity {
     Image droneImg;
 
     int shootCounter = 0;
-    int shootCooldown;
+    double shootCooldown;
 
     public Drone(int startX, int startY, Direction direction, int speed, int shootCooldown){
 

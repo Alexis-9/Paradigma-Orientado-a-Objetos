@@ -8,6 +8,12 @@ public class Plane extends Entity{
     int planeHeight;
     Image planeImg;
 
+    int hitboxWidth;
+    int hitboxHeight;
+
+    int hitboxOffsetX;
+    int hitboxOffsetY;
+
     int screenWidth;
     int screenHeight;
     int tileSize;
@@ -33,6 +39,12 @@ public class Plane extends Entity{
         this.maxEnergy = 100;
         this.currentEnergy = maxEnergy;
         speed = 4;
+
+        hitboxWidth = planeWidth - 40;
+        hitboxHeight = planeHeight - 40;
+
+        hitboxOffsetX = 20;
+        hitboxOffsetY = 20;
     }
 
     public void move(int dx, int dy){
@@ -60,6 +72,7 @@ public class Plane extends Entity{
     public void draw(Graphics g){
 
         g.drawImage(planeImg,x,y,planeWidth,planeHeight,null);
+
     }
 
     public int getY(){
@@ -109,4 +122,13 @@ public class Plane extends Entity{
         currentEnergy = maxEnergy;
     }
 
+    public Rectangle getHitbox(){
+
+        return new Rectangle(
+                x + hitboxOffsetX,
+                y + hitboxOffsetY,
+                hitboxWidth,
+                hitboxHeight
+        );
+    }
 }
