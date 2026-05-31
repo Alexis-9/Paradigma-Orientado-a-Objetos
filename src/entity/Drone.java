@@ -5,8 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Drone extends Entity {
-    int droneWidth;
-    int droneHeight;
     Direction direction;
 
     Image droneImg;
@@ -21,8 +19,8 @@ public class Drone extends Entity {
 
         this.direction = direction;
 
-        droneWidth = 70;
-        droneHeight = 70;
+        width = 70;
+        height = 70;
 
         this.speed = speed;
         this.shootCooldown = shootCooldown;
@@ -39,12 +37,12 @@ public class Drone extends Entity {
     }
 
     public void draw(Graphics g){
-        g.drawImage(droneImg, x, y, droneWidth, droneHeight, null);
+        g.drawImage(droneImg, x, y, width, height, null);
     }
 
     public boolean outOfScreen(int screenWidth){
 
-        return x < -droneWidth || x > screenWidth;
+        return x < -width || x > screenWidth;
     }
 
     public boolean canShoot(){
@@ -52,12 +50,11 @@ public class Drone extends Entity {
     }
 
     public void resetShootCounter(){
-
         shootCounter = 0;
     }
 
     public int getCenterX(){
-        return x + droneWidth / 2;
+        return x + width / 2;
     }
 
     public int getY(){

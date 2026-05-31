@@ -21,15 +21,21 @@ public class GamePanel extends JPanel implements Runnable {
 
     int FPS = 60;
 
+    Image planeSkin;
+
     KeyHandler keyH = new KeyHandler();
 
     Thread gameThread;
 
-    Session session = new Session(screenWidth, screenHeight, tileSize);
+    Session session;
 
-    public GamePanel(){
+    public GamePanel(Image planeSkin){
 
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.planeSkin = planeSkin;
+
+        this.setPreferredSize(
+                new Dimension(screenWidth, screenHeight)
+        );
 
         this.setBackground(Color.black);
 
@@ -38,6 +44,13 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
 
         this.setFocusable(true);
+
+        session = new Session(
+                screenWidth,
+                screenHeight,
+                tileSize,
+                planeSkin
+        );
     }
 
     public void startGameThread(){
@@ -78,12 +91,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        if (session.getGameState() == GameState.Game_Over){
+
+        if(session.getGameState() == GameState.Game_Over){
+
             if(keyH.enterPressed){
+
                 session.startNewGame();
             }
+
             return;
         }
+
         session.update(keyH);
     }
 

@@ -50,15 +50,27 @@ public class MenuPanel extends JPanel
         planeSkins = new Image[]{
 
                 new ImageIcon(
-                        getClass().getResource("/Images/Plane/Up.png")
+                        getClass().getResource("/Images/Plane/Skins/DefaultSkin.png")
                 ).getImage(),
 
                 new ImageIcon(
-                        getClass().getResource("/Images/Plane/UpLeft.png")
+                        getClass().getResource("/Images/Plane/Skins/SkinPortugal.png")
                 ).getImage(),
 
                 new ImageIcon(
-                        getClass().getResource("/Images/Plane/UpRight.png")
+                        getClass().getResource("/Images/Plane/Skins/SkinBrazil.png")
+                ).getImage(),
+
+                new ImageIcon(
+                        getClass().getResource("/Images/Plane/Skins/SkinGermany.png")
+                ).getImage(),
+
+                new ImageIcon(
+                        getClass().getResource("/Images/Plane/Skins/SkinFrance.png")
+                ).getImage(),
+
+                new ImageIcon(
+                        getClass().getResource("/Images/Plane/Skins/SkinArgentina.png")
                 ).getImage()
         };
 
@@ -102,7 +114,9 @@ public class MenuPanel extends JPanel
 
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
 
-                    menu.startGame();
+                    menu.startGame(
+                            planeSkins[currentSkin]
+                    );
                 }
 
                 if(e.getKeyCode() == KeyEvent.VK_LEFT){
@@ -447,7 +461,9 @@ public class MenuPanel extends JPanel
 
         if(playButtonBounds.contains(p)){
 
-            menu.startGame();
+            menu.startGame(
+                    planeSkins[currentSkin]
+            );
         }
 
         if(leftArrowBounds.contains(p)){

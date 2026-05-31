@@ -6,7 +6,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Squadron {
+
     ArrayList<Drone> drones;
+
     int dronesRemaining;
 
     int spawnCounter;

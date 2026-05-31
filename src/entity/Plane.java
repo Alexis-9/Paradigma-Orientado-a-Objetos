@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Plane extends Entity{
-    int planeWidth;
-    int planeHeight;
-    Image planeImg;
 
     int hitboxWidth;
     int hitboxHeight;
@@ -21,27 +18,37 @@ public class Plane extends Entity{
     int maxEnergy;
     int currentEnergy;
 
-    public Plane(int screenWidth, int screenHeight, int tileSize) {
-        this.planeImg = new ImageIcon(getClass().getResource("/Images/Plane/Up.png")).getImage();
+    public Plane(
+            int screenWidth,
+            int screenHeight,
+            int tileSize,
+            Image planeImg
+    ) {
+
+        this.img = planeImg;
+
         this.screenHeight = screenHeight;
+
         this.screenWidth = screenWidth;
+
         this.tileSize = tileSize;
+
         setDefaultValues();
     }
 
     public void setDefaultValues(){
-        planeWidth = tileSize;
-        planeHeight = tileSize * 2;
+        width = tileSize;
+        height = tileSize * 2;
 
-        x = screenWidth / 2 - planeWidth / 2;
-        y = screenHeight - planeHeight - tileSize;
+        x = screenWidth / 2 - width / 2;
+        y = screenHeight - height - tileSize;
 
         this.maxEnergy = 100;
         this.currentEnergy = maxEnergy;
         speed = 4;
 
-        hitboxWidth = planeWidth - 40;
-        hitboxHeight = planeHeight - 40;
+        hitboxWidth = width - 40;
+        hitboxHeight = height - 40;
 
         hitboxOffsetX = 20;
         hitboxOffsetY = 20;
@@ -71,7 +78,7 @@ public class Plane extends Entity{
 
     public void draw(Graphics g){
 
-        g.drawImage(planeImg,x,y,planeWidth,planeHeight,null);
+        g.drawImage(img,x,y,width,height,null);
 
     }
 
@@ -85,9 +92,9 @@ public class Plane extends Entity{
 
     public int getMaxEnergy(){return maxEnergy;}
 
-    public int getWidth(){return planeWidth;}
+    public int getWidth(){return width;}
 
-    public int getHeight(){return planeHeight;}
+    public int getHeight(){return height;}
 
     public void reduceEnergy(int amount){
         currentEnergy -= amount;
@@ -98,8 +105,8 @@ public class Plane extends Entity{
 
 
     public void validateHorizontalBounds(){
-        if (x + planeWidth > screenWidth){
-            x = screenWidth - planeWidth;
+        if (x + width > screenWidth){
+            x = screenWidth - width;
 
         }
 
@@ -113,8 +120,8 @@ public class Plane extends Entity{
             y = 200;
         }
 
-        if(y + planeHeight > screenHeight ){
-            y = screenHeight - planeHeight ;
+        if(y + height > screenHeight ){
+            y = screenHeight - height ;
         }
     }
 
@@ -122,8 +129,8 @@ public class Plane extends Entity{
         currentEnergy = maxEnergy;
     }
 
-    public Rectangle getHitbox(){
-
+    @Override
+    public Rectangle getBounds(){
         return new Rectangle(
                 x + hitboxOffsetX,
                 y + hitboxOffsetY,

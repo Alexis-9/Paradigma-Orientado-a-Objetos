@@ -9,8 +9,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Session {
+
     GameState gameState;
+
     Player player;
+
     Plane plane;
 
     Squadron squadron;
@@ -22,36 +25,54 @@ public class Session {
     int screenWidth;
     int screenHeight;
 
-
-    public Session(int screenWidth, int screenHeight, int tileSize){
+    public Session(
+            int screenWidth,
+            int screenHeight,
+            int tileSize,
+            Image planeSkin
+    ){
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         this.player = new Player();
 
-        this.plane = new Plane(screenWidth, screenHeight, tileSize);
+        this.plane = new Plane(
+                screenWidth,
+                screenHeight,
+                tileSize,
+                planeSkin
+        );
 
         missiles = new ArrayList<>();
 
         currentLevel = new Level(1);
 
         startLevel();
+
         gameState = GameState.Running;
     }
 
     public void startLevel(){
-        squadron = new Squadron(screenWidth, currentLevel);
+
+        squadron = new Squadron(
+                screenWidth,
+                currentLevel
+        );
 
         missiles.clear();
-
     }
 
     public void update(KeyHandler keyH){
+
         movementInput(keyH);
+
         squadron.update();
 
-        //Logica De Disparo, Hay que incluirla en drones
+        // =========================
+        // DRONES SHOOT
+        // =========================
+
         for(Drone drone : squadron.getDrones()){
 
             if(drone.canShoot()){
@@ -99,7 +120,9 @@ public class Session {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        g2.setFont(
+                new Font("Arial", Font.BOLD, 24)
+        );
 
         g2.setColor(Color.WHITE);
 
@@ -110,7 +133,6 @@ public class Session {
                 20,
                 80
         );
-
 
         g2.drawString(
                 "Score: " + player.getScore(),
@@ -129,7 +151,9 @@ public class Session {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // FONDO
+        // =========================
+        // BACKGROUND
+        // =========================
 
         g2.setColor(Color.BLACK);
 
@@ -140,7 +164,9 @@ public class Session {
                 screenHeight
         );
 
-        // TITULO
+        // =========================
+        // TITLE
+        // =========================
 
         g2.setColor(Color.RED);
 
@@ -150,7 +176,8 @@ public class Session {
 
         String title = "GAME OVER";
 
-        int titleX = getCenteredTextX(g2, title);
+        int titleX =
+                getCenteredTextX(g2, title);
 
         g2.drawString(
                 title,
@@ -158,7 +185,9 @@ public class Session {
                 220
         );
 
+        // =========================
         // SCORE
+        // =========================
 
         g2.setColor(Color.WHITE);
 
@@ -169,7 +198,8 @@ public class Session {
         String scoreText =
                 "Score: " + player.getScore();
 
-        int scoreX = getCenteredTextX(g2, scoreText);
+        int scoreX =
+                getCenteredTextX(g2, scoreText);
 
         g2.drawString(
                 scoreText,
@@ -177,7 +207,9 @@ public class Session {
                 320
         );
 
+        // =========================
         // RESTART
+        // =========================
 
         g2.setFont(
                 new Font("Arial", Font.PLAIN, 24)
@@ -196,28 +228,26 @@ public class Session {
         );
     }
 
-
     public int getCenteredTextX(
             Graphics2D g2,
             String text
     ){
 
         int textLength =
-                (int)g2.getFontMetrics()
+                (int) g2.getFontMetrics()
                         .getStringBounds(text, g2)
                         .getWidth();
 
         return screenWidth / 2 - textLength / 2;
     }
 
-
-
     public void drawEnergyBar(Graphics2D g2){
 
-        int maxEnergy = plane.getMaxEnergy();
+        int maxEnergy =
+                plane.getMaxEnergy();
 
-        int currentEnergy = plane.getCurrentEnergy();
-
+        int currentEnergy =
+                plane.getCurrentEnergy();
 
         // =========================
         // BAR SETTINGS
@@ -228,7 +258,6 @@ public class Session {
 
         int barWidth = 200;
         int barHeight = 25;
-
 
         // =========================
         // BACKGROUND
@@ -243,14 +272,14 @@ public class Session {
                 barHeight
         );
 
-
         // =========================
         // CURRENT ENERGY
         // =========================
 
         int currentWidth =
                 (int)(
-                        ((double) currentEnergy / maxEnergy)
+                        ((double) currentEnergy
+                                / maxEnergy)
                                 * barWidth
                 );
 
@@ -262,7 +291,6 @@ public class Session {
                 currentWidth,
                 barHeight
         );
-
 
         // =========================
         // BORDER
@@ -276,7 +304,6 @@ public class Session {
                 barWidth,
                 barHeight
         );
-
 
         // =========================
         // TEXT
@@ -293,8 +320,8 @@ public class Session {
         );
     }
 
-
     public void movementInput(KeyHandler keyH){
+
         int dx = 0;
         int dy = 0;
 
@@ -319,37 +346,44 @@ public class Session {
         plane.update();
     }
 
-
-
     public void updateMissiles(){
+
         for(int i = 0; i < missiles.size(); i++){
+
             Missile missile = missiles.get(i);
 
             missile.update();
 
             explosionDamage(missile);
 
-            if (removeMissile(missile, i)){
+            if(removeMissile(missile, i)){
+
                 i--;
             }
-
         }
-
     }
 
+    public void explosionDamage(Missile missile){
 
-    public Missile explosionDamage(Missile missile){
+        // =========================
+        // DIRECT HIT
+        // =========================
+
         if(!missile.isExploding()
                 && missile.collidesWith(plane)){
 
             missile.triggerExplosion();
 
-            // evita daño de explosión extra
             missile.setDamageApplied(true);
 
             player.loseLife();
+
             playerNextLife();
         }
+
+        // =========================
+        // EXPLOSION DAMAGE
+        // =========================
 
         if(missile.isExploding()
                 && !missile.isDamageApplied()){
@@ -367,23 +401,29 @@ public class Session {
             if(plane.getCurrentEnergy() <= 0){
 
                 player.loseLife();
+
                 playerNextLife();
             }
-
         }
-        return missile;
     }
 
-    public boolean removeMissile(Missile missile, int i){
+    public boolean removeMissile(
+            Missile missile,
+            int index
+    ){
+
         if(missile.isFinished()){
 
-            missiles.remove(i);
+            missiles.remove(index);
+
             return true;
         }
+
         return false;
     }
 
     public void playerNextLife(){
+
         if(player.getLives() > 0){
 
             plane.restoreEnergy();
@@ -395,14 +435,20 @@ public class Session {
     }
 
     public void checkNextLevel(){
-        if(squadron.levelFinished() && currentLevel.getLevelNumber() <= 5){
+
+        if(squadron.levelFinished()
+                && currentLevel.getLevelNumber() <= 5){
+
             currentLevel.nextLevel();
+
             player.addScore(300);
+
             startLevel();
         }
     }
 
     public GameState getGameState(){
+
         return gameState;
     }
 

@@ -6,12 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Missile extends Entity {
-    int missileWidth;
-    int missileHeight;
 
     int screenHeight;
-
-    Image missileImg;
 
     int explosionY;
     Explosion explosion;
@@ -27,12 +23,12 @@ public class Missile extends Entity {
 
         this.screenHeight = screenHeight;
 
-        missileWidth = 16;
-        missileHeight = 32;
+        width = 16;
+        height = 32;
 
         this.speed = speed;
 
-        missileImg = new ImageIcon(
+        img = new ImageIcon(
                 getClass().getResource("/Images/Missile/Missile.png")
         ).getImage();
 
@@ -69,7 +65,7 @@ public class Missile extends Entity {
 
     public void draw(Graphics g) {
         if (!exploding){
-            g.drawImage(missileImg, x, y, missileWidth, missileHeight, null);
+            g.drawImage(img, x, y, width, height, null);
 
         }
 
@@ -128,18 +124,8 @@ public class Missile extends Entity {
         return explosion;
     }
 
-    public boolean collidesWith(Plane plane){
-
-        Rectangle missileBounds = new Rectangle(
-                x,
-                y,
-                missileWidth,
-                missileHeight
-        );
-
-        Rectangle planeBounds = plane.getHitbox();
-
-        return missileBounds.intersects(planeBounds);
+    public boolean collidesWith(Entity other){
+        return getBounds().intersects(other.getBounds());
     }
 
 }

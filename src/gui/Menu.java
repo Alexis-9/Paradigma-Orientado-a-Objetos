@@ -34,9 +34,10 @@ public class Menu extends JFrame {
         setVisible(true);
     }
 
-    public void startGame(){
+    public void startGame(Image planeSkin){
 
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel =
+                new GamePanel(planeSkin);
 
         mainPanel.add(gamePanel, "GAME");
 
