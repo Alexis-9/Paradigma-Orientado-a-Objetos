@@ -5,106 +5,53 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MenuPanel extends JPanel
-        implements Runnable, MouseListener, MouseMotionListener {
+        implements MouseListener, MouseMotionListener {
 
-    Menu menu;
+    private final Menu menu;
 
-    Thread menuThread;
+    private final Image logo;
 
-    Image logo;
+    private final Image[] planeSkins;
 
-    Image[] planeSkins;
+    private int currentSkin = 0;
 
-    int currentSkin = 0;
+    private boolean hoverPlay = false;
 
-    Rectangle playButtonBounds;
+    private final Rectangle playButton =
+            new Rectangle(260, 320, 250, 70);
 
-    Rectangle leftArrowBounds;
+    private final Rectangle leftArrow =
+            new Rectangle(220, 510, 60, 60);
 
-    Rectangle rightArrowBounds;
+    private final Rectangle rightArrow =
+            new Rectangle(490, 510, 60, 60);
 
-    boolean hoverPlay;
+    private final Timer animationTimer;
 
-    int glowAlpha = 120;
-
-    boolean increasing = true;
+    private int glowAlpha = 100;
+    private boolean glowIncreasing = true;
 
     public MenuPanel(Menu menu){
 
         this.menu = menu;
 
         setPreferredSize(new Dimension(768,768));
-
-        setBackground(new Color(5,8,15));
-
+        setBackground(Color.BLACK);
         setFocusable(true);
 
-        // =========================
-        // LOAD IMAGES
-        // =========================
-
-        logo = new ImageIcon(
-                getClass().getResource("/Images/logo.png")
-        ).getImage();
+        logo = loadImage("/Images/logo.png");
 
         planeSkins = new Image[]{
 
-                new ImageIcon(
-                        getClass().getResource("/Images/Plane/Skins/DefaultSkin.png")
-                ).getImage(),
-
-                new ImageIcon(
-                        getClass().getResource("/Images/Plane/Skins/SkinPortugal.png")
-                ).getImage(),
-
-                new ImageIcon(
-                        getClass().getResource("/Images/Plane/Skins/SkinBrazil.png")
-                ).getImage(),
-
-                new ImageIcon(
-                        getClass().getResource("/Images/Plane/Skins/SkinGermany.png")
-                ).getImage(),
-
-                new ImageIcon(
-                        getClass().getResource("/Images/Plane/Skins/SkinFrance.png")
-                ).getImage(),
-
-                new ImageIcon(
-                        getClass().getResource("/Images/Plane/Skins/SkinArgentina.png")
-                ).getImage()
+                loadImage("/Images/Plane/Skins/DefaultSkin.png"),
+                loadImage("/Images/Plane/Skins/SkinPortugal.png"),
+                loadImage("/Images/Plane/Skins/SkinBrazil.png"),
+                loadImage("/Images/Plane/Skins/SkinGermany.png"),
+                loadImage("/Images/Plane/Skins/SkinFrance.png"),
+                loadImage("/Images/Plane/Skins/SkinArgentina.png")
         };
 
-        // =========================
-        // BUTTONS
-        // =========================
-
-        playButtonBounds = new Rectangle(
-                260,
-                310,
-                250,
-                65
-        );
-
-        leftArrowBounds = new Rectangle(
-                220,
-                520,
-                50,
-                50
-        );
-
-        rightArrowBounds = new Rectangle(
-                500,
-                520,
-                50,
-                50
-        );
-
-        // =========================
-        // INPUT
-        // =========================
-
         addMouseListener(this);
-
         addMouseMotionListener(this);
 
         addKeyListener(new KeyAdapter() {
@@ -112,98 +59,84 @@ public class MenuPanel extends JPanel
             @Override
             public void keyPressed(KeyEvent e) {
 
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                switch(e.getKeyCode()){
 
-                    menu.startGame(
-                            planeSkins[currentSkin]
-                    );
-                }
+                    case KeyEvent.VK_ENTER:
+                        startGame();
+                        break;
 
-                if(e.getKeyCode() == KeyEvent.VK_LEFT){
+                    case KeyEvent.VK_LEFT:
+                        previousSkin();
+                        break;
 
-                    previousSkin();
-                }
-
-                if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-
-                    nextSkin();
+                    case KeyEvent.VK_RIGHT:
+                        nextSkin();
+                        break;
                 }
             }
         });
 
-        startMenuThread();
-    }
+        animationTimer = new Timer(16, e -> {
 
-    public void startMenuThread(){
-
-        menuThread = new Thread(this);
-
-        menuThread.start();
-    }
-
-    @Override
-    public void run() {
-
-        while(menuThread != null){
-
-            update();
+            animateGlow();
 
             repaint();
+        });
 
-            try{
-
-                Thread.sleep(16);
-
-            } catch(Exception e){
-
-                e.printStackTrace();
-            }
-        }
+        animationTimer.start();
     }
 
-    public void update(){
+    private Image loadImage(String path){
 
-        // =========================
-        // GLOW
-        // =========================
+        return new ImageIcon(
+                getClass().getResource(path)
+        ).getImage();
+    }
 
-        if(increasing){
+    private void animateGlow(){
+
+        if(glowIncreasing){
 
             glowAlpha += 2;
 
             if(glowAlpha >= 180){
-
-                increasing = false;
+                glowIncreasing = false;
             }
 
         } else {
 
             glowAlpha -= 2;
 
-            if(glowAlpha <= 90){
-
-                increasing = true;
+            if(glowAlpha <= 80){
+                glowIncreasing = true;
             }
         }
     }
 
-    public void previousSkin(){
+    private void startGame(){
 
-        currentSkin--;
+        animationTimer.stop();
 
-        if(currentSkin < 0){
-
-            currentSkin = planeSkins.length - 1;
-        }
+        menu.startGame(
+                planeSkins[currentSkin]
+        );
     }
 
-    public void nextSkin(){
+    private void nextSkin(){
 
         currentSkin++;
 
         if(currentSkin >= planeSkins.length){
-
             currentSkin = 0;
+        }
+    }
+
+    private void previousSkin(){
+
+        currentSkin--;
+
+        if(currentSkin < 0){
+            currentSkin = planeSkins.length - 1;
         }
     }
 
@@ -219,265 +152,251 @@ public class MenuPanel extends JPanel
                 RenderingHints.VALUE_ANTIALIAS_ON
         );
 
-        // =========================
-        // BACKGROUND
-        // =========================
+        drawBackground(g2);
+        drawLogo(g2);
+        drawPlayButton(g2);
+        drawSkinSelector(g2);
+        drawFooter(g2);
+    }
 
-        GradientPaint gradient = new GradientPaint(
-                0,
-                0,
-                new Color(5,8,15),
-                0,
-                getHeight(),
-                new Color(0,0,0)
-        );
+    private void drawBackground(Graphics2D g2){
+
+        GradientPaint gradient =
+                new GradientPaint(
+                        0,
+                        0,
+                        new Color(8,12,25),
+                        0,
+                        getHeight(),
+                        new Color(0,0,0)
+                );
 
         g2.setPaint(gradient);
 
-        g2.fillRect(0,0,getWidth(),getHeight());
+        g2.fillRect(
+                0,
+                0,
+                getWidth(),
+                getHeight()
+        );
 
-        // =========================
-        // SOFT LIGHTS
-        // =========================
-
-        g2.setColor(new Color(0,120,255,30));
+        g2.setColor(
+                new Color(0,150,255,30)
+        );
 
         g2.fillOval(
-                -100,
-                -50,
+                -120,
+                -80,
                 350,
                 350
         );
 
         g2.fillOval(
-                500,
-                100,
+                520,
+                80,
                 300,
                 300
         );
+    }
 
-        // =========================
-        // TITLE
-        // =========================
-
-        g2.setFont(
-                new Font("Arial", Font.BOLD, 54)
-        );
-
-        g2.setColor(Color.WHITE);
-
-        drawCenteredString(
-                g2,
-                "SKY DEFENSE",
-                90
-        );
-
-        // =========================
-        // LOGO
-        // =========================
+    private void drawLogo(Graphics2D g2){
 
         g2.drawImage(
                 logo,
-                180,
-                120,
-                400,
-                120,
+                170,
+                90,
+                430,
+                140,
                 null
         );
 
-        // =========================
-        // PLAY BUTTON SHADOW
-        // =========================
+        g2.setFont(
+                new Font("Arial", Font.BOLD, 18)
+        );
 
-        g2.setColor(new Color(0,0,0,120));
+        g2.setColor(
+                new Color(170,190,220)
+        );
+
+        drawCentered(
+                g2,
+                "WORLD CUP EDITION",
+                250
+        );
+    }
+
+    private void drawPlayButton(Graphics2D g2){
+
+        g2.setColor(
+                new Color(0,0,0,120)
+        );
 
         g2.fillRoundRect(
                 265,
-                315,
+                325,
                 250,
-                65,
+                70,
                 30,
                 30
         );
 
-        // =========================
-        // PLAY BUTTON
-        // =========================
-
         if(hoverPlay){
 
-            g2.setColor(new Color(0,200,255));
+            g2.setColor(
+                    new Color(0,180,255)
+            );
 
         } else {
 
-            g2.setColor(new Color(25,35,55));
+            g2.setColor(
+                    new Color(30,40,65)
+            );
         }
 
         g2.fillRoundRect(
                 260,
-                310,
+                320,
                 250,
-                65,
+                70,
                 30,
                 30
         );
 
-        // BORDER
+        g2.setColor(
+                new Color(0,220,255)
+        );
 
-        g2.setStroke(new BasicStroke(2));
-
-        g2.setColor(new Color(0,220,255));
+        g2.setStroke(
+                new BasicStroke(2)
+        );
 
         g2.drawRoundRect(
                 260,
-                310,
+                320,
                 250,
-                65,
+                70,
                 30,
                 30
         );
 
-        // PLAY TEXT
+        g2.setColor(Color.WHITE);
 
         g2.setFont(
                 new Font("Arial", Font.BOLD, 28)
         );
 
-        g2.setColor(Color.WHITE);
-
-        drawCenteredString(
+        drawCentered(
                 g2,
                 "PLAY",
-                352
+                365
         );
+    }
 
-        // =========================
-        // SELECT SHIP
-        // =========================
+    private void drawSkinSelector(Graphics2D g2){
+
+        g2.setColor(
+                new Color(180,200,230)
+        );
 
         g2.setFont(
-                new Font("Arial", Font.PLAIN, 20)
+                new Font("Arial", Font.PLAIN, 22)
         );
 
-        g2.setColor(new Color(170,190,220));
-
-        drawCenteredString(
+        drawCentered(
                 g2,
-                "Select Aircraft",
-                450
+                "SELECT AIRCRAFT",
+                460
         );
 
-        // =========================
-        // PLANE GLOW
-        // =========================
-
-        g2.setColor(new Color(0,140,255,glowAlpha));
+        g2.setColor(
+                new Color(0,150,255,glowAlpha)
+        );
 
         g2.fillOval(
-                260,
-                500,
                 250,
-                80
+                500,
+                270,
+                90
         );
-
-        // =========================
-        // LEFT ARROW
-        // =========================
-
-        g2.setFont(
-                new Font("Arial", Font.BOLD, 40)
-        );
-
-        g2.setColor(new Color(180,220,255));
-
-        g2.drawString(
-                "‹",
-                230,
-                555
-        );
-
-        // =========================
-        // RIGHT ARROW
-        // =========================
-
-        g2.drawString(
-                "›",
-                515,
-                555
-        );
-
-        // =========================
-        // PLANE
-        // =========================
 
         g2.drawImage(
                 planeSkins[currentSkin],
-                305,
+                304,
                 450,
                 160,
                 160,
                 null
         );
 
-        // =========================
-        // BOTTOM TEXT
-        // =========================
+        g2.setFont(
+                new Font("Arial", Font.BOLD, 40)
+        );
+
+        g2.setColor(
+                new Color(200,220,255)
+        );
+
+        g2.drawString(
+                "‹",
+                235,
+                550
+        );
+
+        g2.drawString(
+                "›",
+                520,
+                550
+        );
+    }
+
+    private void drawFooter(Graphics2D g2){
+
+        g2.setColor(
+                new Color(130,150,180)
+        );
 
         g2.setFont(
                 new Font("Arial", Font.PLAIN, 16)
         );
 
-        g2.setColor(new Color(120,140,170));
-
-        drawCenteredString(
+        drawCentered(
                 g2,
-                "Press ENTER to start",
-                690
+                "Press ENTER to Start",
+                700
         );
     }
 
-    public void drawCenteredString(
+    private void drawCentered(
             Graphics2D g2,
             String text,
-            int y
-    ){
+            int y){
 
-        FontMetrics metrics = g2.getFontMetrics();
+        FontMetrics metrics =
+                g2.getFontMetrics();
 
         int x =
-                (getWidth() - metrics.stringWidth(text)) / 2;
+                (getWidth()
+                        - metrics.stringWidth(text))
+                        / 2;
 
-        g2.drawString(text, x, y);
+        g2.drawString(text,x,y);
     }
-
-    // =========================
-    // MOUSE
-    // =========================
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
         Point p = e.getPoint();
 
-        if(playButtonBounds.contains(p)){
-
-            menu.startGame(
-                    planeSkins[currentSkin]
-            );
+        if(playButton.contains(p)){
+            startGame();
         }
 
-        if(leftArrowBounds.contains(p)){
-
+        if(leftArrow.contains(p)){
             previousSkin();
-
-            repaint();
         }
 
-        if(rightArrowBounds.contains(p)){
-
+        if(rightArrow.contains(p)){
             nextSkin();
-
-            repaint();
         }
     }
 
@@ -485,27 +404,16 @@ public class MenuPanel extends JPanel
     public void mouseMoved(MouseEvent e) {
 
         hoverPlay =
-                playButtonBounds.contains(e.getPoint());
+                playButton.contains(
+                        e.getPoint()
+                );
 
         repaint();
     }
 
-    // =========================
-    // UNUSED
-    // =========================
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    @Override
-    public void mouseDragged(MouseEvent e) {}
+    @Override public void mousePressed(MouseEvent e){}
+    @Override public void mouseReleased(MouseEvent e){}
+    @Override public void mouseEntered(MouseEvent e){}
+    @Override public void mouseExited(MouseEvent e){}
+    @Override public void mouseDragged(MouseEvent e){}
 }

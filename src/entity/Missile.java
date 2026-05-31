@@ -17,7 +17,7 @@ public class Missile extends Entity {
     boolean damageApplied;
 
 
-    public Missile(int startX, int startY, int speed, int screenHeight) {
+    public Missile(double startX, double startY, double speed, int screenHeight) {
         x = startX;
         y = startY;
 
@@ -62,10 +62,10 @@ public class Missile extends Entity {
         }
     }
 
-
+    @Override
     public void draw(Graphics g) {
         if (!exploding){
-            g.drawImage(img, x, y, width, height, null);
+            g.drawImage(img, (int)x, (int)y, width, height, null);
 
         }
 
@@ -80,7 +80,7 @@ public class Missile extends Entity {
     }
 
     public void explode(){
-        explosion = new Explosion(x,y);
+        explosion = new Explosion((int) x,(int) y);
     }
 
     public boolean shouldExplode(){
@@ -90,10 +90,6 @@ public class Missile extends Entity {
     public void setExplosionAltitude(){
         explosionY = 200 + (int) (Math.random() * (screenHeight-200));
     }
-
-    public int getAltitude(){return y;}
-
-    public int getX(){return x;}
 
     public boolean isExploding(){
         return exploding;

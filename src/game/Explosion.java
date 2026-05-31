@@ -4,14 +4,14 @@ import entity.Plane;
 import java.awt.*;
 
 public class Explosion {
-    int x;
-    int y;
+    double x;
+    double y;
     int radius;
 
     int duration;
     int currentFrame;
 
-    public Explosion(int x,int y){
+    public Explosion(double x, double y){
         this.x = x;
         this.y = y;
 
@@ -34,8 +34,8 @@ public class Explosion {
         g.setColor(new Color(255,0,0,100));
 
         g.fillOval(
-                x - radius,
-                y - radius,
+                (int) x - radius,
+                (int) y - radius,
                 radius * 2,
                 radius * 2
         );
@@ -54,8 +54,8 @@ public class Explosion {
     }
 
     public double calculateDistance(Plane plane){
-        int dx = plane.getX() - x;
-        int dy = plane.getY() - y;
+        double dx = plane.getX() - x;
+        double dy = plane.getY() - y;
 
         return Math.sqrt(dx*dx + dy * dy);
     }

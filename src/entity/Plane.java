@@ -40,7 +40,7 @@ public class Plane extends Entity{
         width = tileSize;
         height = tileSize * 2;
 
-        x = screenWidth / 2 - width / 2;
+        x = (double) screenWidth / 2 - (double) width / 2;
         y = screenHeight - height - tileSize;
 
         this.maxEnergy = 100;
@@ -56,7 +56,7 @@ public class Plane extends Entity{
 
     public void move(int dx, int dy){
 
-        int currentSpeed = speed;
+        double currentSpeed = speed;
 
         if(dx != 0 && dy != 0){
             currentSpeed = 3;
@@ -76,25 +76,12 @@ public class Plane extends Entity{
     public void update(){
     }
 
-    public void draw(Graphics g){
-
-        g.drawImage(img,x,y,width,height,null);
-
-    }
-
-    public int getY(){
-        return y;
-    }
-
-    public int getX(){return x;}
+    @Override
+    public void draw(Graphics g){ g.drawImage(img, (int) x, (int) y,width,height,null);}
 
     public int getCurrentEnergy(){return currentEnergy;}
 
     public int getMaxEnergy(){return maxEnergy;}
-
-    public int getWidth(){return width;}
-
-    public int getHeight(){return height;}
 
     public void reduceEnergy(int amount){
         currentEnergy -= amount;
@@ -102,7 +89,6 @@ public class Plane extends Entity{
             currentEnergy =0;
         }
     }
-
 
     public void validateHorizontalBounds(){
         if (x + width > screenWidth){
@@ -132,8 +118,8 @@ public class Plane extends Entity{
     @Override
     public Rectangle getBounds(){
         return new Rectangle(
-                x + hitboxOffsetX,
-                y + hitboxOffsetY,
+                (int)x + hitboxOffsetX,
+                (int)y + hitboxOffsetY,
                 hitboxWidth,
                 hitboxHeight
         );

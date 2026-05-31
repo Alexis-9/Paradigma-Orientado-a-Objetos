@@ -4,11 +4,11 @@ public class Level {
 
     int levelNumber;
 
-    int droneSpeed;
+    double droneSpeed;
 
-    int missileSpeed;
+    double missileSpeed;
 
-    int shootCooldown;
+    double shootCooldown;
 
     public Level(int levelNumber){
 
@@ -25,22 +25,28 @@ public class Level {
 
         levelNumber++;
 
-        droneSpeed = (int)(droneSpeed * 1.15);
+        droneSpeed += droneSpeed * 0.15;
 
-        missileSpeed = (int)(missileSpeed * 1.15);
+        missileSpeed += missileSpeed * 0.15;
 
-        shootCooldown = (int)(shootCooldown * 0.85);
+        shootCooldown -= shootCooldown * 0.15;
     }
 
-    public int getDroneSpeed() {
+    public boolean levelIsInfinte() { return levelNumber >= 5; }
+
+    public boolean levelFinished(Squadron squadron) {
+        return squadron.getDrones().isEmpty() && squadron.getDronesRemaining() == 0 && !levelIsInfinte();
+    }
+
+    public double getDroneSpeed() {
         return droneSpeed;
     }
 
-    public int getMissileSpeed() {
+    public double getMissileSpeed() {
         return missileSpeed;
     }
 
-    public int getShootCooldown() {
+    public double getShootCooldown() {
         return shootCooldown;
     }
 

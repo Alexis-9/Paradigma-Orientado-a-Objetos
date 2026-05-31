@@ -12,7 +12,7 @@ public class Drone extends Entity {
     int shootCounter = 0;
     double shootCooldown;
 
-    public Drone(int startX, int startY, Direction direction, int speed, int shootCooldown){
+    public Drone(int startX, int startY, Direction direction, double speed, double shootCooldown){
 
         this.x = startX;
         this.y = startY;
@@ -36,14 +36,12 @@ public class Drone extends Entity {
         shootCounter++;
     }
 
+    @Override
     public void draw(Graphics g){
-        g.drawImage(droneImg, x, y, width, height, null);
+        g.drawImage(droneImg, (int) x, (int) y, width, height, null);
     }
 
-    public boolean outOfScreen(int screenWidth){
-
-        return x < -width || x > screenWidth;
-    }
+    public boolean outOfScreen(int screenWidth){return x < -width || x > screenWidth;}
 
     public boolean canShoot(){
         return shootCounter >= shootCooldown;
@@ -52,15 +50,6 @@ public class Drone extends Entity {
     public void resetShootCounter(){
         shootCounter = 0;
     }
-
-    public int getCenterX(){
-        return x + width / 2;
-    }
-
-    public int getY(){
-        return y;
-    }
-
 
     public void move(){
         if (direction == Direction.Left){

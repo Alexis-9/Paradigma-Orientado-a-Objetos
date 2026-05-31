@@ -45,6 +45,6 @@ public class Menu extends JFrame {
 
         gamePanel.requestFocusInWindow();
 
-        gamePanel.startGameThread();
+        gamePanel.startGameTimer();
     }
 }

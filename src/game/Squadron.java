@@ -29,7 +29,7 @@ public class Squadron {
 
         dronesRemaining = 10;
 
-        isInfinite = (level.getLevelNumber() < 5) ? false : true;
+        isInfinite = level.getLevelNumber() >= 5;
 
     }
 
@@ -102,11 +102,9 @@ public class Squadron {
         }
     }
 
+    public int getDronesRemaining() { return dronesRemaining; }
+
     public ArrayList<Drone> getDrones(){
         return drones;
-    }
-
-    public boolean levelFinished(){
-        return (dronesRemaining == 0 && drones.isEmpty() && !isInfinite);
     }
 }

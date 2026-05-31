@@ -6,7 +6,7 @@ public class Player {
     int nextLife = 1000;
 
     public Player(){
-        this.lives = 10;
+        this.lives = 3;
         this.score = 0;
     }
 
@@ -23,12 +23,9 @@ public class Player {
         lives++;
     }
 
-
-
     public int getScore(){
         return score;
     }
-
 
     public void calculateScore(int distance){
         int scoreAmount = 0;
