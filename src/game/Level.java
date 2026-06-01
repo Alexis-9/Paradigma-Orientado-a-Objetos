@@ -32,10 +32,10 @@ public class Level {
         shootCooldown -= shootCooldown * 0.15;
     }
 
-    public boolean levelIsInfinte() { return levelNumber >= 5; }
+    public boolean levelIsInfinite() { return levelNumber >= 5; }
 
     public boolean levelFinished(Squadron squadron) {
-        return squadron.getDrones().isEmpty() && squadron.getDronesRemaining() == 0 && !levelIsInfinte();
+        return squadron.getDrones().isEmpty() && squadron.getDronesRemaining() == 0 && !levelIsInfinite();
     }
 
     public double getDroneSpeed() {

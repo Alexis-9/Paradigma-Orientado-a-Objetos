@@ -43,14 +43,6 @@ public class Drone extends Entity {
 
     public boolean outOfScreen(int screenWidth){return x < -width || x > screenWidth;}
 
-    public boolean canShoot(){
-        return shootCounter >= shootCooldown;
-    }
-
-    public void resetShootCounter(){
-        shootCounter = 0;
-    }
-
     public void move(){
         if (direction == Direction.Left){
             x -= speed;
@@ -58,4 +50,25 @@ public class Drone extends Entity {
             x += speed;
         }
     }
+
+    public Missile tryShoot(
+            double missileSpeed,
+            int screenHeight
+    ){
+
+        if(shootCounter < shootCooldown){
+            return null;
+        }
+
+        shootCounter = 0;
+
+        return new Missile(
+                getCenterX(),
+                getY(),
+                missileSpeed,
+                screenHeight
+        );
+    }
+
+
 }

@@ -24,7 +24,6 @@ public class Session {
 
     Level currentLevel;
 
-    Hud hud;
 
     int screenWidth;
     int screenHeight;
@@ -53,7 +52,6 @@ public class Session {
         currentLevel = new Level(1);
 
         startLevel();
-        hud = new Hud();
 
         gameState = GameState.Running;
     }
@@ -72,7 +70,7 @@ public class Session {
 
         if(gameState == GameState.Game_Over){
 
-            hud.drawGameOverScreen(g, screenHeight, screenWidth, player);
+            Hud.drawGameOverScreen(g, screenHeight, screenWidth, player);
 
             return;
         }
@@ -86,7 +84,7 @@ public class Session {
             missile.draw(g);
         }
 
-        hud.drawHUD(g, player, currentLevel, plane);
+        Hud.drawHUD(g, player, currentLevel, plane);
     }
 
     public void update(KeyHandler keyH){
@@ -95,32 +93,26 @@ public class Session {
 
         squadron.update();
 
-        // =========================
-        // DRONES SHOOT deberia ir dentro de drone
-        // =========================
-
-        for(Drone drone : squadron.getDrones()){
-
-            if(drone.canShoot()){
-
-                missiles.add(
-                        new Missile(
-                                drone.getCenterX(),
-                                drone.getY(),
-                                currentLevel.getMissileSpeed(),
-                                screenHeight
-                        )
-                );
-
-                drone.resetShootCounter();
-            }
-        }
+        updateDroneShots();
 
         updateMissiles();
 
         checkNextLevel();
     }
 
+    public void updateDroneShots(){
+        for(Drone drone : squadron.getDrones()){
+
+            Missile missile = drone.tryShoot(
+                    currentLevel.getMissileSpeed(),
+                    screenHeight
+            );
+
+            if (missile != null){
+                missiles.add(missile);
+            }
+        }
+    }
 
 
     public void movementInput(KeyHandler keyH){
