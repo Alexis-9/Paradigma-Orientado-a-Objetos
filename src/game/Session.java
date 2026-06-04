@@ -187,7 +187,7 @@ public class Session {
 
             plane.reduceEnergy(damage);
 
-            player.calculateScore(damage);
+            player.calculateScore(damage, currentLevel.levelIsInfinite());
 
             missile.setDamageApplied(true);
 
@@ -228,7 +228,7 @@ public class Session {
         if(currentLevel.levelFinished(squadron) && missiles.isEmpty()){
 
             currentLevel.nextLevel();
-            player.addScore(300);
+            player.addScore(300, currentLevel.levelIsInfinite());
             startLevel();
 
         }

@@ -10,9 +10,9 @@ public class Player {
         this.score = 0;
     }
 
-    public void addScore(int scoreAmount){
+    public void addScore(int scoreAmount, boolean isInfinite){
         score += scoreAmount;
-        checkExtraLife();
+        checkExtraLife(isInfinite);
     }
 
     public void loseLife(){
@@ -27,7 +27,7 @@ public class Player {
         return score;
     }
 
-    public void calculateScore(int distance){
+    public void calculateScore(int distance, boolean isInfinite){
         int scoreAmount = 0;
         if (distance==0){
             scoreAmount = 40;
@@ -36,11 +36,11 @@ public class Player {
             scoreAmount = 20;
         }
 
-        addScore(scoreAmount);
+        addScore(scoreAmount, isInfinite);
     }
 
-    public void checkExtraLife(){
-        if (score>=nextLife){
+    public void checkExtraLife(boolean isInfinite){
+        if (score>=nextLife && !isInfinite){
             addLife();
             nextLife += 1000;
         }

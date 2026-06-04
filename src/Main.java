@@ -7,6 +7,7 @@ public class Main {
 }
 
 //Cambiar la logica de altura para que cumpla con los metros
-//Cambiar Hud (Elegir donde va a ir realmente e implementarlo)
+//Cambiar Hud (Elegir donde va a ir realmente e implementarlo) - Alexis
+//Implementar Vidas Limitadas en Nivel Infinito
 //Cambiar MenuPanel
 //Implementar Interfaces
