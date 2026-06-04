@@ -18,6 +18,8 @@ public class Plane extends Entity{
     int maxEnergy;
     int currentEnergy;
 
+    int altitude;
+
     public Plane(
             int screenWidth,
             int screenHeight,
@@ -37,8 +39,8 @@ public class Plane extends Entity{
     }
 
     public void setDefaultValues(){
-        width = tileSize;
-        height = tileSize * 2;
+        width = tileSize*3;
+        height = tileSize * 3;
 
         x = (double) screenWidth / 2 - (double) width / 2;
         y = screenHeight - height - tileSize;
@@ -64,6 +66,7 @@ public class Plane extends Entity{
 
         x += dx * currentSpeed;
         y += dy * currentSpeed;
+        updateAltitude(screenHeight);
 
 
         validateHorizontalBounds();
@@ -78,6 +81,14 @@ public class Plane extends Entity{
 
     @Override
     public void draw(Graphics g){ g.drawImage(img, (int) x, (int) y,width,height,null);}
+
+    public void updateAltitude(int screenHeight){
+        int minY = 200;
+        int maxY = screenHeight - height;
+
+        altitude = 1000 +
+                (int)((y - minY) / (maxY - minY) * 4000);
+    }
 
     public int getCurrentEnergy(){return currentEnergy;}
 
@@ -124,5 +135,7 @@ public class Plane extends Entity{
                 hitboxHeight
         );
     }
+
+    public int getAltitude(){return altitude;}
 
 }

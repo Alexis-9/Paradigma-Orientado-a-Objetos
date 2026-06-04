@@ -5,12 +5,13 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed;
+    public boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed;
+
+    private boolean escConsumed = false;
+    private boolean enterConsumed = false;
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -29,6 +30,8 @@ public class KeyHandler implements KeyListener {
             rightPressed = true;
         } else if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
+        }else if (code == KeyEvent.VK_ESCAPE){
+            escPressed = true;
         }
 
     }
@@ -51,7 +54,28 @@ public class KeyHandler implements KeyListener {
         }
         else if (code == KeyEvent.VK_ENTER) {
             enterPressed = false;
+            enterConsumed = false;
+        }
+        else if (code == KeyEvent.VK_ESCAPE) {
+            escPressed = false;
+            escConsumed = false;
         }
 
+    }
+
+    public boolean consumeEscPress() {
+        if (escPressed && !escConsumed) {
+            escConsumed = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean consumeEnterPress() {
+        if (enterPressed && !enterConsumed) {
+            enterConsumed = true;
+            return true;
+        }
+        return false;
     }
 }

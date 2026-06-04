@@ -1,5 +1,6 @@
 package game;
 
+import audio.SoundManager;
 import entity.Drone;
 import entity.Missile;
 import entity.Plane;
@@ -19,11 +20,11 @@ public class Session {
 
     Squadron squadron;
 
-
     ArrayList<Missile> missiles;
 
     Level currentLevel;
 
+    private final SoundManager soundManager;
 
     int screenWidth;
     int screenHeight;
@@ -32,11 +33,13 @@ public class Session {
             int screenWidth,
             int screenHeight,
             int tileSize,
-            Image planeSkin
+            Image planeSkin,
+            SoundManager soundManager
     ){
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.soundManager = soundManager;
 
         this.player = new Player();
 
@@ -54,6 +57,8 @@ public class Session {
         startLevel();
 
         gameState = GameState.Running;
+
+        soundManager.playBackground(SoundManager.Sound.BACKGROUND);
     }
 
     public void startLevel(){
@@ -75,6 +80,23 @@ public class Session {
             return;
         }
 
+        if(gameState == GameState.Paused){
+
+            plane.draw(g);
+
+            squadron.draw(g);
+
+            for(Missile missile : missiles){
+                missile.draw(g);
+            }
+
+            Hud.drawHUD(g, player, currentLevel, plane);
+
+            Hud.drawPauseScreen(g, screenWidth, screenHeight);
+
+            return;
+        }
+
         plane.draw(g);
 
         squadron.draw(g);
@@ -89,6 +111,10 @@ public class Session {
 
     public void update(KeyHandler keyH){
 
+        handlePauseInput(keyH);
+
+        if(gameState == GameState.Paused) return;
+
         movementInput(keyH);
 
         squadron.update();
@@ -100,6 +126,12 @@ public class Session {
         checkNextLevel();
     }
 
+    private void handlePauseInput(KeyHandler keyH){
+        if(keyH.consumeEscPress()){
+            togglePause();
+        }
+    }
+
     public void updateDroneShots(){
         for(Drone drone : squadron.getDrones()){
 
@@ -109,6 +141,7 @@ public class Session {
             );
 
             if (missile != null){
+                soundManager.play(SoundManager.Sound.SHOOT);
                 missiles.add(missile);
             }
         }
@@ -165,6 +198,8 @@ public class Session {
         if(!missile.isExploding()
                 && missile.collidesWith(plane)){
 
+            soundManager.play(SoundManager.Sound.EXPLOSION);
+
             missile.triggerExplosion();
 
             missile.setDamageApplied(true);
@@ -178,23 +213,23 @@ public class Session {
         // EXPLOSION DAMAGE
         // =========================
 
-        if(missile.isExploding()
-                && !missile.isDamageApplied()){
+        if(missile.isExploding() && !missile.isDamageApplied()){
 
-            int damage =
-                    missile.getExplosion()
-                            .calculateDamage(plane);
+            Explosion explosion = missile.getExplosion();
+            double distance = explosion.calculateDistance(plane);
+            int damage = explosion.calculateDamage(plane);
+
+            soundManager.play(SoundManager.Sound.EXPLOSION);
 
             plane.reduceEnergy(damage);
 
-            player.calculateScore(damage);
+            player.addScoreByDistance(distance);
+            player.checkExtraLife(currentLevel.getLevelNumber());
 
             missile.setDamageApplied(true);
 
             if(plane.getCurrentEnergy() <= 0){
-
                 player.loseLife();
-
                 playerNextLife();
             }
         }
@@ -215,10 +250,13 @@ public class Session {
 
         if(player.getLives() > 0){
 
+            soundManager.play(SoundManager.Sound.LOSE_LIFE);
             plane.restoreEnergy();
 
         } else {
 
+            soundManager.stopBackground();
+            soundManager.play(SoundManager.Sound.GAME_OVER);
             gameState = GameState.Game_Over;
         }
     }
@@ -226,15 +264,23 @@ public class Session {
     public void checkNextLevel(){
 
         if(currentLevel.levelFinished(squadron) && missiles.isEmpty()){
-
+            soundManager.play(SoundManager.Sound.NEXT_LEVEL);
             currentLevel.nextLevel();
             player.addScore(300);
+            player.checkExtraLife(currentLevel.getLevelNumber());
             startLevel();
-
         }
     }
 
     public GameState getGameState(){return gameState;}
 
+    public void togglePause(){
+
+        if(gameState == GameState.Running){
+            gameState = GameState.Paused;
+        } else if (gameState == GameState.Paused) {
+            gameState = GameState.Running;
+        }
+    }
 
 }

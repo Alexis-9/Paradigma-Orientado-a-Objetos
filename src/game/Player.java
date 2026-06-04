@@ -12,7 +12,6 @@ public class Player {
 
     public void addScore(int scoreAmount){
         score += scoreAmount;
-        checkExtraLife();
     }
 
     public void loseLife(){
@@ -27,21 +26,23 @@ public class Player {
         return score;
     }
 
-    public void calculateScore(int distance){
-        int scoreAmount = 0;
-        if (distance==0){
+    public void addScoreByDistance(double distance){
+        int scoreAmount;
+        if (distance >= 150) {
             scoreAmount = 40;
-        }
-        else if (distance==20){
+        } else if (distance >= 80) {
             scoreAmount = 20;
+        } else {
+            scoreAmount = 0;
         }
-
         addScore(scoreAmount);
     }
 
-    public void checkExtraLife(){
-        if (score>=nextLife){
-            addLife();
+    public void checkExtraLife(int levelNumber){
+        while (score>=nextLife){
+            if (levelNumber < 5) {
+                addLife();
+            }
             nextLife += 1000;
         }
     }
