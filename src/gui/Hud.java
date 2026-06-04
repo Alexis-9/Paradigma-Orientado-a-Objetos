@@ -26,7 +26,7 @@ public class Hud {
 
         g2.drawString("Level: " + currentLevel.getLevelNumber(), 20, 160);
 
-        g2.drawString("Altitude: " + (int)plane.getY(), 20, 200);
+        g2.drawString("Altitude: " + plane.getAltitude(), 20, 200);
     }
 
     public static void drawGameOverScreen(Graphics g, int screenHeight, int screenWidth, Player player){
@@ -57,6 +57,28 @@ public class Hud {
 
         drawCenteredText(g2, "Press ENTER to restart", 420, screenWidth);}
 
+    public static void drawPauseScreen(
+            Graphics g,
+            int screenWidth,
+            int screenHeight){
+
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setColor(new Color(0,0,0,150));
+        g2.fillRect(0,0,screenWidth,screenHeight);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 40));
+
+        String text = "PAUSA";
+
+        FontMetrics fm = g2.getFontMetrics();
+
+        int x = (screenWidth - fm.stringWidth(text)) / 2;
+        int y = screenHeight / 2;
+
+        g2.drawString(text, x, y);
+    }
 
     public static int getCenteredTextX(Graphics2D g2, String text, int screenWidth){
 

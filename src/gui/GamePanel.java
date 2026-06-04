@@ -1,5 +1,6 @@
 package gui;
 
+import audio.SoundManager;
 import game.GameState;
 import game.Session;
 
@@ -29,6 +30,8 @@ public class GamePanel extends JPanel {
 
     Session session;
 
+    SoundManager soundManager;
+
     public GamePanel(Image planeSkin){
 
         this.planeSkin = planeSkin;
@@ -45,14 +48,15 @@ public class GamePanel extends JPanel {
 
         this.setFocusable(true);
 
+        this.soundManager = new SoundManager();
+
         session = new Session(
                 screenWidth,
                 screenHeight,
                 tileSize,
-                planeSkin
+                planeSkin,
+                soundManager
         );
-
-        startGameTimer();
     }
 
     public void startGameTimer(){
@@ -67,13 +71,14 @@ public class GamePanel extends JPanel {
 
         if(session.getGameState() == GameState.Game_Over){
 
-            if(keyH.enterPressed){
+            if(keyH.consumeEnterPress()){
 
                 session = new Session(
                         screenWidth,
                         screenHeight,
                         tileSize,
-                        planeSkin
+                        planeSkin,
+                        soundManager
                 );
             }
 
