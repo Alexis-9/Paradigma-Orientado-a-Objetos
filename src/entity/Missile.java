@@ -9,14 +9,12 @@ public class Missile extends Entity {
 
     int screenHeight;
 
-    int explosionAltitude;
+    int explosionY;
     Explosion explosion;
 
     boolean exploding;
     boolean finished;
     boolean damageApplied;
-
-    int altitude;
 
 
     public Missile(double startX, double startY, double speed, int screenHeight) {
@@ -34,8 +32,7 @@ public class Missile extends Entity {
                 getClass().getResource("/Images/Missile/Missile.png")
         ).getImage();
 
-
-        setExplosionAltitude();
+        setExplosionY();
 
         exploding = false;
         finished = false;
@@ -47,7 +44,6 @@ public class Missile extends Entity {
 
         if (!exploding){
             move();
-            updateAltitude(screenHeight);
 
             if (shouldExplode()){
                 exploding = true;
@@ -77,9 +73,6 @@ public class Missile extends Entity {
         }
     }
 
-    public void updateAltitude(int screenHeight){
-        altitude = (int)((y / screenHeight) * 5000);
-    }
 
     public void move(){
         y+= speed;
@@ -90,11 +83,11 @@ public class Missile extends Entity {
     }
 
     public boolean shouldExplode(){
-        return altitude >= explosionAltitude;
+        return y >= explosionY;
     }
 
-    public void setExplosionAltitude(){
-        explosionAltitude =  (int)(Math.random() * 3501) + 1200;;
+    public void setExplosionY(){
+        explosionY =  (int)(Math.random() * (screenHeight - 200)) + 200;
     }
 
     public boolean isExploding(){

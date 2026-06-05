@@ -20,7 +20,7 @@ public class GamePanel extends JPanel {
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
-    int FPS = 40;
+    int FPS = 60;
 
     Image planeSkin;
 

@@ -54,8 +54,8 @@ public class Explosion {
     }
 
     public double calculateDistance(Plane plane){
-        double dx = plane.getX() - x;
-        double dy = plane.getY() - y;
+        double dx = plane.getCenterX() - x;
+        double dy = plane.getCenterY() - y;
 
         return Math.sqrt(dx*dx + dy * dy);
     }

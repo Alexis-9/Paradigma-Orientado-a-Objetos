@@ -6,14 +6,20 @@ public class Main {
     }
 }
 
-//Cambiar la logica de altura para que cumpla con los metros (listo)
+//Cambiar la logica de altura para que cumpla con los metros (Ya Hecho)
 //Cambiar Hud (Elegir donde va a ir realmente e implementarlo)
 //Cambiar MenuPanel
 //Guia del juego(en ajustes)
 //Implementar Interfaces
-//Musica(disparo dron, explosion, perder vida, pasar nivel, musica de fondo, morir)
-//Pausa
+//Musica(disparo dron, explosion, perder vida, pasar nivel, musica de fondo, morir) (Ya Hecho)
+//Pausa (Ya hecho)
 //Animacion pasar nivel
+
+
+//Arbol Generico
+//Cambios de Claude en el codigo, modificar diagramas
+
+
 //3 tipos de drones
 //- El normal(el que tenemos ahora)
 //-El medio(tira lasers)
