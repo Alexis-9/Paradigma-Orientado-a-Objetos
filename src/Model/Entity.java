@@ -1,4 +1,4 @@
-package entity;
+package Model;
 
 import java.awt.*;
 
@@ -14,7 +14,7 @@ public abstract class Entity {
 
     Image img;
 
-    public abstract void update();
+    public abstract void update(float delta);
 
     public Rectangle getBounds(){
         return new Rectangle((int) x, (int) y, width, height);
@@ -33,5 +33,7 @@ public abstract class Entity {
     public double getCenterY(){return y + (double) height / 2;}
 
     public abstract void draw(Graphics g);
+
+    public abstract void setDefaultValues();
 
 }
