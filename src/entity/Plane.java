@@ -5,18 +5,18 @@ import java.awt.*;
 
 public class Plane extends Entity{
 
-    int hitboxWidth;
-    int hitboxHeight;
+    private int hitboxWidth;
+    private int hitboxHeight;
 
-    int hitboxOffsetX;
-    int hitboxOffsetY;
+    private int hitboxOffsetX;
+    private int hitboxOffsetY;
 
-    int screenWidth;
-    int screenHeight;
-    int tileSize;
+    private int screenWidth;
+    private int screenHeight;
+    private int tileSize;
 
-    int maxEnergy;
-    int currentEnergy;
+    private int maxEnergy;
+    private int currentEnergy;
 
     public Plane(
             int screenWidth,

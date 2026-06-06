@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public class Squadron {
 
-    ArrayList<Drone> drones;
+    private ArrayList<Drone> drones;
 
-    int dronesRemaining;
+    private int dronesRemaining;
 
-    int spawnCounter;
+    private int spawnCounter;
 
-    int screenWidth;
+    private int screenWidth;
 
-    Level level;
+    private Level level;
 
-    boolean isInfinite;
+    private boolean isInfinite;
 
     public Squadron(int screenWidth, Level level){
 

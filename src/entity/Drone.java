@@ -5,12 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Drone extends Entity {
-    Direction direction;
+    private Direction direction;
 
-    Image droneImg;
+    private Image droneImg;
 
-    int shootCounter = 0;
-    double shootCooldown;
+    private int shootCounter = 0;
+    private double shootCooldown;
 
     public Drone(int startX, int startY, Direction direction, int speed, int shootCooldown){
 

@@ -1,9 +1,9 @@
 package game;
 
 public class Player {
-    int lives;
-    int score;
-    int nextLife = 1000;
+   private int lives;
+   private int score;
+   private int nextLife = 1000;
 
     public Player(){
         this.lives = 10;

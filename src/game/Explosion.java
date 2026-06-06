@@ -4,12 +4,12 @@ import entity.Plane;
 import java.awt.*;
 
 public class Explosion {
-    int x;
-    int y;
-    int radius;
+    private int x;
+    private int y;
+    private int radius;
 
-    int duration;
-    int currentFrame;
+    private int duration;
+    private int currentFrame;
 
     public Explosion(int x,int y){
         this.x = x;

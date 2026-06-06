@@ -2,13 +2,10 @@ package game;
 
 public class Level {
 
-    int levelNumber;
-
-    int droneSpeed;
-
-    int missileSpeed;
-
-    int shootCooldown;
+    private int levelNumber;
+    private int droneSpeed;
+    private int missileSpeed;
+    private int shootCooldown;
 
     public Level(int levelNumber){
 
