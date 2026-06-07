@@ -2,7 +2,7 @@ package Model;
 
 import java.awt.*;
 
-public abstract class Entity implements Updatable, Drawable {
+public abstract class Entity implements Updatable, Drawable, Collidable {
 
     public double speed;
 

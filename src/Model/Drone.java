@@ -47,6 +47,9 @@ public class Drone extends Entity {
         }
     }
 
+    public boolean outOfScreen(int screenWidth){
+        return x < -width || x > screenWidth;
+    }
 
     public Missile tryShoot(double missileSpeed, int screenHeight){
 

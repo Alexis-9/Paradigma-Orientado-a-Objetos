@@ -3,7 +3,10 @@ package Model;
 import javax.swing.*;
 import java.awt.*;
 
-public class Missile extends Entity{
+public class Missile extends Entity {
+
+    private int screenHeight;
+    private int explosionY;
 
     private Explosion explosion;
 
@@ -41,23 +44,27 @@ public class Missile extends Entity{
         }
 
         if (explosion != null){
-
             explosion.update();
-
             if (explosion.finished()){
                 finished = true;
             }
         }
-
     }
 
     @Override
     public void draw(Graphics g) {
-
+        if (!exploding && img != null){
+            g.drawImage(img, (int) x, (int) y, width, height, null);
+        }
+        if (explosion != null){
+            explosion.draw(g);
+        }
     }
 
     @Override
     public void setDefaultValues() {
+        // REVISAR: usa Images.PLANE (imagen del avion). Deberia ser Images.MISSILE.
+        // Ademas los paths del enum Images estan rotos y la imagen no carga.
         this.img = new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage();
     }
 
@@ -66,11 +73,35 @@ public class Missile extends Entity{
     }
 
     public void explode(){
-        explosion = new Explosion((int) x,(int) y);
+        explosion = new Explosion((int) x, (int) y);
     }
 
     public boolean shouldExplode(){
         return y >= explosionY;
     }
 
+    public void setExplosionY(){
+        explosionY = (int)(Math.random() * (screenHeight - 200)) + 200;
+    }
+
+    public boolean isExploding(){ return exploding; }
+
+    public void triggerExplosion(){
+        if(!exploding){
+            exploding = true;
+            explode();
+        }
+    }
+
+    public boolean isFinished(){ return finished; }
+
+    public boolean isDamageApplied(){ return damageApplied; }
+
+    public void setDamageApplied(boolean damageApplied){ this.damageApplied = damageApplied; }
+
+    public Explosion getExplosion(){ return explosion; }
+
+    public boolean collidesWith(Entity other){
+        return getBounds().intersects(other.getBounds());
+    }
 }

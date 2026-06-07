@@ -12,7 +12,7 @@ public class Plane extends Entity{
         this.y = startY;
         this.width = width;
         this.height = height;
-        this.img = planeImg;
+      //  this.img = planeImg;
         setDefaultValues();
     }
 
