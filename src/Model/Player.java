@@ -11,9 +11,11 @@ public class Player {
         this.score = 0;
     }
 
-    public void addScore(int scoreAmount){ score += scoreAmount; }
+    public void addScore(int scoreAmount){
+        if (scoreAmount < 0) return;
+        score += scoreAmount; }
 
-    public void loseLife(){ lives--; }
+    public void loseLife(){ if (lives > 0) lives--; }
 
     public void addLife(){ lives++; }
 

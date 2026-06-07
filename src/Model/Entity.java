@@ -17,7 +17,9 @@ public abstract class Entity implements Updatable, Drawable, Collidable {
     protected void setPosition(double x, double y) { this.x = x; this.y = y; }
     protected void setSize(int width, int height) { this.width = width; this.height = height; }
     protected void moveBy(double dx, double dy) { this.x += dx; this.y += dy; }
-    protected void setSpeed(double speed) { this.speed = speed; }
+    protected void setSpeed(double speed) {
+        if (speed < 0) return;
+        this.speed = speed; }
     protected double getSpeed() { return speed; }
     protected void setImage(Image img) { this.img = img; }
     protected Image getImage() { return img; }

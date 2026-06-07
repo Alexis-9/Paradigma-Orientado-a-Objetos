@@ -40,7 +40,7 @@ public class Missile extends Entity {
         }
 
         if (explosion != null){
-            explosion.update();
+            explosion.update(delta);
             if (explosion.finished()){
                 finished = true;
             }
@@ -96,7 +96,7 @@ public class Missile extends Entity {
 
     public Explosion getExplosion(){ return explosion; }
 
-    public boolean collidesWith(Entity other){
+    public boolean collidesWith(Collidable other){
         return getBounds().intersects(other.getBounds());
     }
 }

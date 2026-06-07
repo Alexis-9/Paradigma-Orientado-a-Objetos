@@ -2,7 +2,7 @@ package Model;
 
 import java.awt.*;
 
-public class Explosion {
+public class Explosion implements Updatable, Drawable {
 
     private double x;
     private double y;
@@ -18,7 +18,8 @@ public class Explosion {
         currentFrame = 0;
     }
 
-    public void update(){
+    @Override
+    public void update(float delta){
         currentFrame++;
     }
 
@@ -26,6 +27,7 @@ public class Explosion {
         return currentFrame >= duration;
     }
 
+    @Override
     public void draw(Graphics g){
         g.setColor(new Color(255, 0, 0, 100));
         g.fillOval((int) x - radius, (int) y - radius, radius * 2, radius * 2);
