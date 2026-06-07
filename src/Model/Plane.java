@@ -8,49 +8,46 @@ public class Plane extends Entity{
     private int currentEnergy;
 
     public Plane(float startX, float startY, int width, int height) {
-        this.x = startX;
-        this.y = startY;
-        this.width = width;
-        this.height = height;
-      //  this.img = planeImg;
+        setPosition(startX, startY);
+        setSize(width, height);
         setDefaultValues();
     }
 
     public void setDefaultValues() {
         this.maxEnergy = 100;
         this.currentEnergy = maxEnergy;
-        speed = 4;
+        setSpeed(4);
 
-        this.img = new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage();
+        setImage(new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage());
 
-        //hitboxWidth = width - 40;
-        //hitboxHeight = height - 40;
+        //hitboxWidth = getWidth() - 40;
+        //hitboxHeight = getHeight() - 40;
         //hitboxOffsetX = 20;
         //hitboxOffsetY = 20;
     }
 
-
     public void move(int dx, int dy, float delta){
-        if (dx!=0 && dy!=0) {speed = 3;}
+        if (dx != 0 && dy != 0) { setSpeed(3); }
 
-        x += dx * speed * delta;
-        y += dy * speed * delta;
+        moveBy(dx * getSpeed() * delta, dy * getSpeed() * delta);
     }
 
     @Override
     public void update(float delta) {
-        speed = 4;
+        setSpeed(4);
     }
 
     @Override
     public void draw(Graphics g) {
-
+        if (getImage() != null) {
+            g.drawImage(getImage(), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+        }
     }
 
     public void reduceEnergy(int amount){
         currentEnergy -= amount;
-        if (currentEnergy<=0) {
-            currentEnergy =0;
+        if (currentEnergy <= 0) {
+            currentEnergy = 0;
         }
     }
 
@@ -61,5 +58,4 @@ public class Plane extends Entity{
     public int getCurrentEnergy(){return currentEnergy;}
 
     public int getMaxEnergy(){return maxEnergy;}
-
 }

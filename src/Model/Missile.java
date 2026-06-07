@@ -15,15 +15,11 @@ public class Missile extends Entity {
     private boolean damageApplied;
 
     public Missile(double startX, double startY, double speed, int screenHeight) {
-        x = startX;
-        y = startY;
+        setPosition(startX, startY);
+        setSize(16, 32);
+        setSpeed(speed);
 
         this.screenHeight = screenHeight;
-
-        width = 16;
-        height = 32;
-
-        this.speed = speed;
 
         setExplosionY();
 
@@ -53,8 +49,8 @@ public class Missile extends Entity {
 
     @Override
     public void draw(Graphics g) {
-        if (!exploding && img != null){
-            g.drawImage(img, (int) x, (int) y, width, height, null);
+        if (!exploding && getImage() != null){
+            g.drawImage(getImage(), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
         }
         if (explosion != null){
             explosion.draw(g);
@@ -64,20 +60,19 @@ public class Missile extends Entity {
     @Override
     public void setDefaultValues() {
         // REVISAR: usa Images.PLANE (imagen del avion). Deberia ser Images.MISSILE.
-        // Ademas los paths del enum Images estan rotos y la imagen no carga.
-        this.img = new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage();
+        setImage(new ImageIcon(getClass().getResource(Images.MISSILE.getPath())).getImage());
     }
 
     public void move(float delta){
-        y += speed * delta;
+        moveBy(0, getSpeed() * delta);
     }
 
     public void explode(){
-        explosion = new Explosion((int) x, (int) y);
+        explosion = new Explosion((int) getX(), (int) getY());
     }
 
     public boolean shouldExplode(){
-        return y >= explosionY;
+        return getY() >= explosionY;
     }
 
     public void setExplosionY(){
