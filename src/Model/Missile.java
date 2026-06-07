@@ -5,11 +5,11 @@ import java.awt.*;
 
 public class Missile extends Entity{
 
-    Explosion explosion;
+    private Explosion explosion;
 
-    boolean exploding;
-    boolean finished;
-    boolean damageApplied;
+    private boolean exploding;
+    private boolean finished;
+    private boolean damageApplied;
 
     public Missile(double startX, double startY, double speed, int screenHeight) {
         x = startX;
