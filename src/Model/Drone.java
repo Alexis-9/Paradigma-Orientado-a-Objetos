@@ -48,7 +48,7 @@ public class Drone extends Entity {
         return getX() < -getWidth() || getX() > screenWidth;
     }
 
-    public Missile tryShoot(double missileSpeed, int screenHeight){
+    public Missile tryShoot(double missileSpeed, int explosionY){
         if(shootCounter < shootCooldown){return null;}
 
         shootCounter = 0;
@@ -57,7 +57,7 @@ public class Drone extends Entity {
                 getCenterX(),
                 getY(),
                 missileSpeed,
-                screenHeight
+                explosionY
         );
     }
 }

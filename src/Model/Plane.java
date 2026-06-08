@@ -35,7 +35,7 @@ public class Plane extends Entity{
         double newX = getX();
         double newY = getY();
 
-        if (newX < 0) newX = 0;
+        if (newX < -20) newX = -20;
         if (newX + getWidth() > screenWidth) newX = screenWidth - getWidth();
         if (newY < topBound) newY = topBound;
         if (newY + getHeight() > screenHeight) newY = screenHeight - getHeight();

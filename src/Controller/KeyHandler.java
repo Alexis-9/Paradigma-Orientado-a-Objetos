@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed;
+    private boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed;
 
     private boolean escConsumed = false;
     private boolean enterConsumed = false;
@@ -51,5 +51,37 @@ public class KeyHandler implements KeyListener {
             return true;
         }
         return false;
+    }
+
+    public boolean isUpPressed() {
+        return upPressed;
+    }
+
+    public boolean isDownPressed() {
+        return downPressed;
+    }
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    public boolean isEnterPressed() {
+        return enterPressed;
+    }
+
+    public boolean isEscPressed() {
+        return escPressed;
+    }
+
+    public boolean isEscConsumed() {
+        return escConsumed;
+    }
+
+    public boolean isEnterConsumed() {
+        return enterConsumed;
     }
 }

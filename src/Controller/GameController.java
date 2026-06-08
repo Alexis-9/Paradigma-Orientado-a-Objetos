@@ -27,6 +27,7 @@ public class GameController extends JPanel {
     private ArrayList<Missile> missiles;
 
     private final KeyHandler keyHandler = new KeyHandler();
+    private final InputSource input = keyHandler;
 
     public GameController() {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -68,17 +69,17 @@ public class GameController extends JPanel {
 
     private void update() {
         if (gameState == GameState.PAUSED) {
-            if (keyHandler.consumeEscPress()) resume();
+            if (input.consumeEscPress()) resume();
             return;
         }
 
         if (gameState == GameState.GAME_OVER) {
-            if (keyHandler.consumeEnterPress()) startNewGame();
+            if (input.consumeEnterPress()) startNewGame();
             return;
         }
 
         // RUNNING
-        if (keyHandler.consumeEscPress()) { pause(); return; }
+        if (input.consumeEscPress()) { pause(); return; }
 
         movementInput();
         squadron.update(delta);
@@ -91,10 +92,10 @@ public class GameController extends JPanel {
         int dx = 0;
         int dy = 0;
 
-        if (keyHandler.upPressed) dy--;
-        if (keyHandler.downPressed) dy++;
-        if (keyHandler.leftPressed) dx--;
-        if (keyHandler.rightPressed) dx++;
+        if (input.isUpPressed()) dy--;
+        if (input.isDownPressed()) dy++;
+        if (input.isLeftPressed()) dx--;
+        if (input.isRightPressed()) dx++;
 
         plane.update(delta);
         plane.move(dx, dy, delta);
@@ -195,7 +196,6 @@ public class GameController extends JPanel {
             missile.draw(g);
         }
 
-        // HUD minimo de prueba (texto plano, sin barra linda)
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 18));
         g.drawString("Lives: " + player.getLives(), 20, 30);

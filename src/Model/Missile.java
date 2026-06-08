@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class Missile extends Entity {
 
-    private int screenHeight;
     private int explosionY;
 
     private Explosion explosion;
@@ -14,18 +13,18 @@ public class Missile extends Entity {
     private boolean finished;
     private boolean damageApplied;
 
-    public Missile(double startX, double startY, double speed, int screenHeight) {
+    public Missile(double startX, double startY, double speed, int explosionY) {
         setPosition(startX, startY);
         setSize(16, 32);
         setSpeed(speed);
 
-        this.screenHeight = screenHeight;
-
-        setExplosionY();
+        this.explosionY = explosionY;
 
         exploding = false;
         finished = false;
         damageApplied = false;
+
+        setDefaultValues();
     }
 
     @Override
@@ -74,9 +73,6 @@ public class Missile extends Entity {
         return getY() >= explosionY;
     }
 
-    public void setExplosionY(){
-        explosionY = (int)(Math.random() * (screenHeight - 200)) + 200;
-    }
 
     public boolean isExploding(){ return exploding; }
 

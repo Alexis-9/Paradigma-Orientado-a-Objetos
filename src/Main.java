@@ -18,9 +18,11 @@ public class Main {
         });
     }
 }
-//Cambiar la logica de altura para que cumpla con los metros (Ya Hecho)
+//Cambiar la logica de altura para que cumpla con los metros
 //Cambiar Hud (Elegir donde va a ir realmente e implementarlo)
-//Cambiar MenuPanel
+//Hacer MenuController
+//Hacer MenuPanell
+//Preguntarle a Nahuel por GameView
 //Guia del juego(en ajustes)
 //Implementar Interfaces
 //Musica(disparo dron, explosion, perder vida, pasar nivel, musica de fondo, morir) (Ya Hecho)
