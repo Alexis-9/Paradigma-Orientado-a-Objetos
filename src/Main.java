@@ -1,11 +1,23 @@
-import gui.Menu;
+import Controller.GameController;
+
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        new Menu();
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Sky Defense - Test");
+            GameController game = new GameController();
+
+            frame.add(game);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            game.requestFocusInWindow();
+        });
     }
 }
-
 //Cambiar la logica de altura para que cumpla con los metros (Ya Hecho)
 //Cambiar Hud (Elegir donde va a ir realmente e implementarlo)
 //Cambiar MenuPanel

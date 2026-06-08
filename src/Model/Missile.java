@@ -59,7 +59,6 @@ public class Missile extends Entity {
 
     @Override
     public void setDefaultValues() {
-        // REVISAR: usa Images.PLANE (imagen del avion). Deberia ser Images.MISSILE.
         setImage(new ImageIcon(getClass().getResource(Images.MISSILE.getPath())).getImage());
     }
 

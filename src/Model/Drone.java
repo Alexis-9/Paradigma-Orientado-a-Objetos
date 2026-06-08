@@ -19,7 +19,7 @@ public class Drone extends Entity {
 
     @Override
     public void setDefaultValues(){
-        setSpeed(3);
+        setSpeed(180);
         setImage(new ImageIcon(getClass().getResource(Images.DRONE.getPath())).getImage());
     }
 

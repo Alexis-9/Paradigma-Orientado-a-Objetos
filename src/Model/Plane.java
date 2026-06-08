@@ -16,10 +16,9 @@ public class Plane extends Entity{
     public void setDefaultValues() {
         this.maxEnergy = 100;
         this.currentEnergy = maxEnergy;
-        setSpeed(4);
+        setSpeed(240);
 
         setImage(new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage());
-
         //hitboxWidth = getWidth() - 40;
         //hitboxHeight = getHeight() - 40;
         //hitboxOffsetX = 20;
@@ -27,14 +26,26 @@ public class Plane extends Entity{
     }
 
     public void move(int dx, int dy, float delta){
-        if (dx != 0 && dy != 0) { setSpeed(3); }
+        if (dx != 0 && dy != 0) { setSpeed(180); }
 
         moveBy(dx * getSpeed() * delta, dy * getSpeed() * delta);
     }
 
+    public void clampToScreen(int screenWidth, int screenHeight, int topBound){
+        double newX = getX();
+        double newY = getY();
+
+        if (newX < 0) newX = 0;
+        if (newX + getWidth() > screenWidth) newX = screenWidth - getWidth();
+        if (newY < topBound) newY = topBound;
+        if (newY + getHeight() > screenHeight) newY = screenHeight - getHeight();
+
+        setPosition(newX, newY);
+    }
+
     @Override
     public void update(float delta) {
-        setSpeed(4);
+        setSpeed(240);
     }
 
     @Override

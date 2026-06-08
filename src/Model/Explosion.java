@@ -33,12 +33,18 @@ public class Explosion implements Updatable, Drawable {
         g.fillOval((int) x - radius, (int) y - radius, radius * 2, radius * 2);
     }
 
-    public int calculateDamage(Plane plane){
+    public ExplosionResult resolveImpact(Plane plane){
         double distance = calculateDistance(plane);
-        if (distance >= 150) return 0;
-        else if (distance >= 80) return 20;
-        else if (distance >= 20) return 40;
-        return 100;
+
+        if (distance > 150){
+            return new ExplosionResult(40, 0, false);
+        } else if (distance >= 80){
+            return new ExplosionResult(20, 20, false);
+        } else if (distance >= 20){
+            return new ExplosionResult(0, 40, false);
+        } else {
+            return new ExplosionResult(0, 0, true);
+        }
     }
 
     public double calculateDistance(Plane plane){
