@@ -1,20 +1,17 @@
-import Controller.GameController;
+import Controller.GamePanel;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Sky Defense - Test");
-            GameController game = new GameController();
-
-            frame.add(game);
+            JFrame frame = new JFrame("Sky Defense");
+            frame.add(new GamePanel());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
-
-            game.requestFocusInWindow();
+            frame.requestFocusInWindow();
         });
     }
 }

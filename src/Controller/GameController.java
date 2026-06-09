@@ -2,23 +2,17 @@ package Controller;
 
 import Model.*;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
-public class GameController extends JPanel {
+public class GameController {
 
-    private static final int TILE_SIZE = 48;
-    private static final int SCREEN_WIDTH = TILE_SIZE * 16;   // 768
-    private static final int SCREEN_HEIGHT = TILE_SIZE * 16;  // 768
+    public static final int TILE_SIZE = 48;
+    public static final int SCREEN_WIDTH = TILE_SIZE * 16;   // 768
+    public static final int SCREEN_HEIGHT = TILE_SIZE * 16;  // 768
     private static final int TOP_BOUND = 200;
-    private static final int FPS = 60;
-
-    private final float delta = 1f / FPS;
 
     private GameState gameState = GameState.RUNNING;
-
-    private Timer gameTimer;
 
     private Player player;
     private Plane plane;
@@ -26,23 +20,17 @@ public class GameController extends JPanel {
     private Level currentLevel;
     private ArrayList<Missile> missiles;
 
-    private final KeyHandler keyHandler = new KeyHandler();
-    private final InputSource input = keyHandler;
+    private final InputSource input;
 
-    public GameController() {
-        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        setBackground(Color.DARK_GRAY);
-        setFocusable(true);
-        addKeyListener(keyHandler);
-
+    public GameController(InputSource input) {
+        this.input = input;
         startNewGame();
-        startGameTimer();
     }
 
     private void startNewGame() {
         player = new Player();
 
-        int planeSize = TILE_SIZE * 3;                       // 144
+        int planeSize = TILE_SIZE * 3;
         float startX = SCREEN_WIDTH / 2f - planeSize / 2f;
         float startY = SCREEN_HEIGHT - planeSize - TILE_SIZE;
         plane = new Plane(startX, startY, planeSize, planeSize);
@@ -59,15 +47,7 @@ public class GameController extends JPanel {
         missiles.clear();
     }
 
-    private void startGameTimer() {
-        gameTimer = new Timer(1000 / FPS, e -> {
-            update();
-            repaint();
-        });
-        gameTimer.start();
-    }
-
-    private void update() {
+    public void update(float delta) {
         if (gameState == GameState.PAUSED) {
             if (input.consumeEscPress()) resume();
             return;
@@ -78,17 +58,16 @@ public class GameController extends JPanel {
             return;
         }
 
-        // RUNNING
         if (input.consumeEscPress()) { pause(); return; }
 
-        movementInput();
+        movementInput(delta);
         squadron.update(delta);
         dronesShoot();
-        updateMissiles();
+        updateMissiles(delta);
         checkNextLevel();
     }
 
-    private void movementInput() {
+    private void movementInput(float delta) {
         int dx = 0;
         int dy = 0;
 
@@ -111,7 +90,7 @@ public class GameController extends JPanel {
         }
     }
 
-    private void updateMissiles() {
+    private void updateMissiles(float delta) {
         for (int i = 0; i < missiles.size(); i++) {
             Missile missile = missiles.get(i);
             missile.update(delta);
@@ -125,12 +104,10 @@ public class GameController extends JPanel {
     }
 
     private void resolveExplosion(Missile missile) {
-        // impacto directo: el misil toca al avion y todavia no exploto
         if (!missile.isExploding() && missile.collidesWith(plane)) {
             missile.triggerExplosion();
         }
 
-        // dano por explosion: exploto y aun no se aplico el dano
         if (missile.isExploding() && !missile.isDamageApplied()) {
             ExplosionResult result = missile.getExplosion().resolveImpact(plane);
 
@@ -167,46 +144,13 @@ public class GameController extends JPanel {
         }
     }
 
-    private void pause() {
-        gameState = GameState.PAUSED;
-    }
+    private void pause() { gameState = GameState.PAUSED; }
+    private void resume() { gameState = GameState.RUNNING; }
 
-    private void resume() {
-        gameState = GameState.RUNNING;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        if (gameState == GameState.GAME_OVER) {
-            g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("GAME OVER", SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2);
-            g.setFont(new Font("Arial", Font.PLAIN, 20));
-            g.setColor(Color.WHITE);
-            g.drawString("Score: " + player.getScore(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 + 40);
-            g.drawString("ENTER para reiniciar", SCREEN_WIDTH / 2 - 90, SCREEN_HEIGHT / 2 + 70);
-            return;
-        }
-
-        plane.draw(g);
-        squadron.draw(g);
-        for (Missile missile : missiles) {
-            missile.draw(g);
-        }
-
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 18));
-        g.drawString("Lives: " + player.getLives(), 20, 30);
-        g.drawString("Score: " + player.getScore(), 20, 55);
-        g.drawString("Level: " + currentLevel.getLevelNumber(), 20, 80);
-        g.drawString("Energy: " + plane.getCurrentEnergy(), 20, 105);
-
-        if (gameState == GameState.PAUSED) {
-            g.setColor(Color.YELLOW);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("PAUSA", SCREEN_WIDTH / 2 - 80, SCREEN_HEIGHT / 2);
-        }
-    }
+    public GameState getGameState() { return gameState; }
+    public Player getPlayer() { return player; }
+    public Plane getPlane() { return plane; }
+    public Squadron getSquadron() { return squadron; }
+    public Level getCurrentLevel() { return currentLevel; }
+    public List<Missile> getMissiles() { return missiles; }
 }

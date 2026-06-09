@@ -3,7 +3,7 @@ package Controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyHandler implements KeyListener {
+public class KeyHandler implements KeyListener, InputSource {
 
     private boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed;
 
