@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.*;
+import audio.SoundManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,7 +16,8 @@ public class GamePanel extends JPanel {
 
     public GamePanel() {
         KeyHandler keyHandler = new KeyHandler();
-        this.controller = new GameController(keyHandler);
+        SoundManager soundManager = new SoundManager();
+        this.controller = new GameController(keyHandler, soundManager);
 
         setPreferredSize(new Dimension(GameController.SCREEN_WIDTH, GameController.SCREEN_HEIGHT));
         setBackground(Color.DARK_GRAY);

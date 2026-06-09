@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.*;
+import audio.AudioPlayer;
+import audio.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +23,13 @@ public class GameController {
     private ArrayList<Missile> missiles;
 
     private final InputSource input;
+    private final AudioPlayer audio;
 
-    public GameController(InputSource input) {
+    public GameController(InputSource input, AudioPlayer audio) {
         this.input = input;
+        this.audio = audio;
         startNewGame();
+        audio.playBackground(Sound.BACKGROUND);
     }
 
     private void startNewGame() {
@@ -54,7 +59,10 @@ public class GameController {
         }
 
         if (gameState == GameState.GAME_OVER) {
-            if (input.consumeEnterPress()) startNewGame();
+            if (input.consumeEnterPress()) {
+                startNewGame();
+                audio.playBackground(Sound.BACKGROUND);
+            }
             return;
         }
 
@@ -86,6 +94,7 @@ public class GameController {
             Missile missile = drone.tryShoot(currentLevel.getMissileSpeed(), SCREEN_HEIGHT);
             if (missile != null) {
                 missiles.add(missile);
+                audio.play(Sound.SHOOT);
             }
         }
     }
@@ -106,6 +115,7 @@ public class GameController {
     private void resolveExplosion(Missile missile) {
         if (!missile.isExploding() && missile.collidesWith(plane)) {
             missile.triggerExplosion();
+            audio.play(Sound.EXPLOSION);
         }
 
         if (missile.isExploding() && !missile.isDamageApplied()) {
@@ -131,8 +141,11 @@ public class GameController {
         player.loseLife();
         if (player.getLives() > 0) {
             plane.restoreEnergy();
+            audio.play(Sound.LOSE_LIFE);
         } else {
             gameState = GameState.GAME_OVER;
+            audio.stopBackground();
+            audio.play(Sound.GAME_OVER);
         }
     }
 
@@ -141,6 +154,7 @@ public class GameController {
             currentLevel.nextLevel();
             player.addScore(300);
             startLevel();
+            audio.play(Sound.NEXT_LEVEL);
         }
     }
 

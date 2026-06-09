@@ -4,14 +4,11 @@ import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 
-public class SoundManager {
-
-    public enum Sound {
-        SHOOT, EXPLOSION, LOSE_LIFE, NEXT_LEVEL, BACKGROUND, GAME_OVER
-    }
+public class SoundManager implements AudioPlayer {
 
     private Clip backgroundClip;
 
+    @Override
     public void play(Sound sound) {
         String path = resolvePath(sound);
         try {
@@ -33,6 +30,7 @@ public class SoundManager {
         }
     }
 
+    @Override
     public void playBackground(Sound sound) {
         stopBackground();
         String path = resolvePath(sound);
@@ -51,6 +49,7 @@ public class SoundManager {
         }
     }
 
+    @Override
     public void stopBackground() {
         if (backgroundClip != null && backgroundClip.isRunning()) {
             backgroundClip.stop();
