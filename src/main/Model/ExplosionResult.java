@@ -1,4 +1,4 @@
-package Model;
+package main.Model;
 
 public class ExplosionResult {
 
@@ -12,6 +12,10 @@ public class ExplosionResult {
         this.lethal = lethal;
     }
 
+
+    /**
+     * Getters.
+     */
     public int getScore(){ return score; }
 
     public int getDamage(){ return damage; }

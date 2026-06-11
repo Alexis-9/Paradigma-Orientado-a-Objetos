@@ -1,4 +1,4 @@
-package Model;
+package main.Model;
 
 public enum Images {
     DRONE("/Images/Drone/Drone.png"),
@@ -11,5 +11,8 @@ public enum Images {
         this.path = path;
     }
 
+    /**
+     * Getter.
+     */
     public String getPath(){return path;}
 }
