@@ -8,6 +8,19 @@ public class SoundManager implements AudioPlayer {
 
     private Clip backgroundClip;
 
+    /**
+     * Plays a short sound effect once.
+     *
+     * PRE:
+     * - sound != null.
+     *
+     * POST:
+     * - The corresponding audio clip is loaded and played once.
+     * - The clip is automatically closed after finishing.
+     * - If the audio resource is not found, no action is performed.
+     *
+     * @param sound sound identifier to play
+     */
     @Override
     public void play(Sound sound) {
         String path = resolvePath(sound);
@@ -30,6 +43,19 @@ public class SoundManager implements AudioPlayer {
         }
     }
 
+    /**
+     * Plays a looping background sound, replacing any previous background audio.
+     *
+     * PRE:
+     * - sound != null.
+     *
+     * POST:
+     * - Previous background music is stopped and closed.
+     * - New background clip is loaded and started in loop mode.
+     * - The clip remains active until explicitly stopped.
+     *
+     * @param sound background sound identifier
+     */
     @Override
     public void playBackground(Sound sound) {
         stopBackground();
@@ -49,6 +75,14 @@ public class SoundManager implements AudioPlayer {
         }
     }
 
+    /**
+     * Stops and releases the current background music if active.
+     *
+     * POST:
+     * - Background clip is stopped if running.
+     * - Audio resources are released.
+     * - backgroundClip is left in a non-playing state.
+     */
     @Override
     public void stopBackground() {
         if (backgroundClip != null && backgroundClip.isRunning()) {
@@ -57,6 +91,18 @@ public class SoundManager implements AudioPlayer {
         }
     }
 
+    /**
+     * Resolves the file path associated with a sound enum value.
+     *
+     * PRE:
+     * - sound != null.
+     *
+     * POST:
+     * - Returns a valid resource path string for the given sound.
+     *
+     * @param sound sound identifier
+     * @return resource path of the audio file
+     */
     private String resolvePath(Sound sound) {
         return switch (sound) {
             case SHOOT      -> "/Sounds/droneShot.wav";

@@ -32,6 +32,16 @@ public class GameController {
         audio.playBackground(Sound.BACKGROUND);
     }
 
+    /**
+     * Initializes a new game session.
+     *
+     * POST:
+     * - Player is reset.
+     * - Plane is created at starting position.
+     * - Level is reset to 1.
+     * - Missiles and squadron are initialized.
+     * - Game state is set to RUNNING.
+     */
     private void startNewGame() {
         player = new Player();
 
@@ -47,11 +57,32 @@ public class GameController {
         gameState = GameState.RUNNING;
     }
 
+    /**
+     * Initializes a new level without resetting the entire game.
+     *
+     * POST:
+     * - Squadron is reset for the new level.
+     * - All missiles are cleared.
+     */
     private void startLevel() {
         squadron = new Squadron(SCREEN_WIDTH, currentLevel);
         missiles.clear();
     }
 
+    /**
+     * Updates the game state each frame.
+     *
+     * PRE:
+     * - delta >= 0.
+     *
+     * POST:
+     * - Game state is updated according to current GameState.
+     * - Player input is processed.
+     * - Plane, squadron and missiles are updated.
+     * - Game progression (levels, lives, game over) is evaluated.
+     *
+     * @param delta time elapsed since last update
+     */
     public void update(float delta) {
         if (gameState == GameState.PAUSED) {
             if (input.consumeEscPress()) resume();
@@ -75,6 +106,19 @@ public class GameController {
         checkNextLevel();
     }
 
+    /**
+     * Processes player movement input and updates plane position.
+     *
+     * PRE:
+     * - delta >= 0.
+     *
+     * POST:
+     * - dx and dy are computed from input state.
+     * - Plane is updated and moved accordingly.
+     * - Plane position is clamped inside screen bounds.
+     *
+     * @param delta time elapsed since last update
+     */
     private void movementInput(float delta) {
         int dx = 0;
         int dy = 0;
@@ -89,6 +133,18 @@ public class GameController {
         plane.clampToScreen(SCREEN_WIDTH, SCREEN_HEIGHT, TOP_BOUND);
     }
 
+    /**
+     * Handles shooting logic for all drones in the squadron.
+     *
+     * PRE:
+     * - squadron != null.
+     * - currentLevel != null.
+     *
+     * POST:
+     * - Each drone may generate a missile based on cooldown.
+     * - New missiles are added to the missiles list.
+     * - Shooting sound is played when a missile is created.
+     */
     private void dronesShoot() {
         for (Drone drone : squadron.getDrones()) {
             Missile missile = drone.tryShoot(currentLevel.getMissileSpeed(), SCREEN_HEIGHT);
@@ -99,6 +155,19 @@ public class GameController {
         }
     }
 
+    /**
+     * Updates all active missiles and removes finished ones.
+     *
+     * PRE:
+     * - missiles != null.
+     *
+     * POST:
+     * - Each missile is updated.
+     * - Explosion logic is resolved.
+     * - Finished missiles are removed from the list.
+     *
+     * @param delta time elapsed since last update
+     */
     private void updateMissiles(float delta) {
         for (int i = 0; i < missiles.size(); i++) {
             Missile missile = missiles.get(i);
@@ -112,6 +181,24 @@ public class GameController {
         }
     }
 
+    /**
+     * Resolves missile explosion effects on the plane.
+     *
+     * PRE:
+     * - missile != null.
+     * - plane != null.
+     *
+     * POST:
+     * - If missile collides with plane, explosion is triggered.
+     * - If missile is exploding and damage not applied:
+     *   - ExplosionResult is computed.
+     *   - Player score is updated.
+     *   - Extra life is checked.
+     *   - Plane energy or lives are reduced accordingly.
+     *   - Missile is marked as processed.
+     *
+     * @param missile missile to evaluate
+     */
     private void resolveExplosion(Missile missile) {
         if (!missile.isExploding() && missile.collidesWith(plane)) {
             missile.triggerExplosion();
@@ -137,6 +224,18 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles player life loss and game over conditions.
+     *
+     * POST:
+     * - If player still has lives:
+     *   - Plane energy is restored.
+     *   - Lose life sound is played.
+     * - If no lives remain:
+     *   - Game state is set to GAME_OVER.
+     *   - Background music is stopped.
+     *   - Game over sound is played.
+     */
     private void loseLife() {
         player.loseLife();
         if (player.getLives() > 0) {
@@ -149,6 +248,16 @@ public class GameController {
         }
     }
 
+    /**
+     * Checks if current level is completed and advances if necessary.
+     *
+     * POST:
+     * - If level is finished:
+     *   - Level is incremented.
+     *   - Player receives bonus score.
+     *   - New level is initialized.
+     *   - Next level sound is played.
+     */
     private void checkNextLevel() {
         if (currentLevel.levelFinished(squadron)) {
             currentLevel.nextLevel();
@@ -158,9 +267,25 @@ public class GameController {
         }
     }
 
+    /**
+     * Pauses the game.
+     *
+     * POST:
+     * - Game state is set to PAUSED.
+     */
     private void pause() { gameState = GameState.PAUSED; }
+
+    /**
+     * Resumes the game.
+     *
+     * POST:
+     * - Game state is set to RUNNING.
+     */
     private void resume() { gameState = GameState.RUNNING; }
 
+    /**
+     * Getters.
+     */
     public GameState getGameState() { return gameState; }
     public Player getPlayer() { return player; }
     public Plane getPlane() { return plane; }

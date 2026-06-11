@@ -3,6 +3,13 @@ import Controller.GamePanel;
 import javax.swing.*;
 
 public class Main {
+
+
+    /**
+     * Starts the game and graphics.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Sky Defense");
