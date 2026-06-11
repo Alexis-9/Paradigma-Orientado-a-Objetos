@@ -9,8 +9,8 @@ public class Level {
 
     public Level(int levelNumber){
         this.levelNumber = levelNumber;
-        droneSpeed = 120;
-        missileSpeed = 240;
+        droneSpeed = 135;
+        missileSpeed = 260;
         shootCooldown = 90;
     }
 

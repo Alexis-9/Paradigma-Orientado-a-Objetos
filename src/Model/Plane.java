@@ -25,7 +25,7 @@ public class Plane extends Entity{
     public void setDefaultValues() {
         this.maxEnergy = 100;
         this.currentEnergy = maxEnergy;
-        setSpeed(240);
+        setSpeed(350);
 
         setImage(new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage());
         //hitboxWidth = getWidth() - 40;
@@ -49,7 +49,7 @@ public class Plane extends Entity{
      * @param delta time elapsed since last update
      */
     public void move(int dx, int dy, float delta){
-        if (dx != 0 && dy != 0) { setSpeed(180); }
+        if (dx != 0 && dy != 0) { setSpeed(260); }
 
         moveBy(dx * getSpeed() * delta, dy * getSpeed() * delta);
     }
@@ -96,7 +96,7 @@ public class Plane extends Entity{
      */
     @Override
     public void update(float delta) {
-        setSpeed(240);
+        setSpeed(350);
     }
 
     /**

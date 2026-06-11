@@ -147,7 +147,9 @@ public class GameController {
      */
     private void dronesShoot() {
         for (Drone drone : squadron.getDrones()) {
-            Missile missile = drone.tryShoot(currentLevel.getMissileSpeed(), SCREEN_HEIGHT);
+            int explosionY = TOP_BOUND + (int)(Math.random() * (SCREEN_HEIGHT - TOP_BOUND));
+
+            Missile missile = drone.tryShoot(currentLevel.getMissileSpeed(), explosionY);
             if (missile != null) {
                 missiles.add(missile);
                 audio.play(Sound.SHOOT);

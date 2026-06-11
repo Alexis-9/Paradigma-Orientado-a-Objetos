@@ -22,6 +22,7 @@ public class GamePanel extends JPanel {
         setPreferredSize(new Dimension(GameController.SCREEN_WIDTH, GameController.SCREEN_HEIGHT));
         setBackground(Color.DARK_GRAY);
         setFocusable(true);
+        addHierarchyListener(e -> { if (isShowing()) requestFocusInWindow(); });
         addKeyListener(keyHandler);
 
         gameTimer = new Timer(1000 / FPS, e -> {
