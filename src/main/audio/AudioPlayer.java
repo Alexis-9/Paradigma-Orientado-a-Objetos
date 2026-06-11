@@ -1,4 +1,4 @@
-package audio;
+package main.audio;
 
 public interface AudioPlayer {
     void play(Sound sound);

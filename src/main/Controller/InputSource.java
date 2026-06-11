@@ -1,4 +1,4 @@
-package Controller;
+package main.Controller;
 
 public interface InputSource {
     boolean isUpPressed();

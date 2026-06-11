@@ -1,4 +1,4 @@
-package audio;
+package main.audio;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -15,9 +15,9 @@ public class SoundManager implements AudioPlayer {
      * - sound != null.
      *
      * POST:
-     * - The corresponding audio clip is loaded and played once.
+     * - The corresponding main.audio clip is loaded and played once.
      * - The clip is automatically closed after finishing.
-     * - If the audio resource is not found, no action is performed.
+     * - If the main.audio resource is not found, no action is performed.
      *
      * @param sound sound identifier to play
      */
@@ -44,7 +44,7 @@ public class SoundManager implements AudioPlayer {
     }
 
     /**
-     * Plays a looping background sound, replacing any previous background audio.
+     * Plays a looping background sound, replacing any previous background main.audio.
      *
      * PRE:
      * - sound != null.
@@ -101,7 +101,7 @@ public class SoundManager implements AudioPlayer {
      * - Returns a valid resource path string for the given sound.
      *
      * @param sound sound identifier
-     * @return resource path of the audio file
+     * @return resource path of the main.audio file
      */
     private String resolvePath(Sound sound) {
         return switch (sound) {

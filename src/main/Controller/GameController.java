@@ -1,8 +1,8 @@
-package Controller;
+package main.Controller;
 
-import Model.*;
-import audio.AudioPlayer;
-import audio.Sound;
+import main.Model.*;
+import main.audio.AudioPlayer;
+import main.audio.Sound;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,6 @@
-import Controller.GamePanel;
+package main;
+
+import main.Controller.GamePanel;
 
 import javax.swing.*;
 

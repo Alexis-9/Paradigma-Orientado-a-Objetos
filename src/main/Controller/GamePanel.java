@@ -1,7 +1,7 @@
-package Controller;
+package main.Controller;
 
-import Model.*;
-import audio.SoundManager;
+import main.Model.*;
+import main.audio.SoundManager;
 
 import javax.swing.*;
 import java.awt.*;

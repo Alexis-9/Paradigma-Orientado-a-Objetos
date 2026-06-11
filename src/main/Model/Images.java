@@ -1,4 +1,4 @@
-package Model;
+package main.Model;
 
 public enum Images {
     DRONE("/Images/Drone/Drone.png"),

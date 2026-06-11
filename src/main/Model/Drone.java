@@ -1,4 +1,4 @@
-package Model;
+package main.Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,11 +22,11 @@ public class Drone extends Entity {
      * Initializes the drone's default values.
      *
      * PRE:
-     * - The Images.DRONE resource must exist in the project's resources.
+     * - The main.Images.DRONE resource must exist in the project's resources.
      *
      * POST:
      * - speed = 180.
-     * - image references the image associated with Images.DRONE.
+     * - image references the image associated with main.Images.DRONE.
      *
      * @implSpec
      * Sets the base speed and assigns the drone's default sprite.
