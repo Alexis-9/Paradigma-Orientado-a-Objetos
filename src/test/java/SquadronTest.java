@@ -32,7 +32,7 @@ class SquadronTest {
     void setDirection_returnsLeftOrRight() {
         Squadron squadron = new Squadron(768, new Level(1));
 
-        Direction direction = squadron.setDirection();
+        Direction direction = squadron.calculateDirection();
 
         assertTrue(direction == Direction.LEFT || direction == Direction.RIGHT);
     }

@@ -69,7 +69,7 @@ public class Squadron {
      * - Level shootCooldown is used as drone parameter.
      */
     public void spawnDrone(){
-        Direction direction = setDirection();
+        Direction direction = calculateDirection();
 
         int randomY = (int)(Math.random() * 150);
 
@@ -108,7 +108,7 @@ public class Squadron {
      *
      * @return the selected direction
      */
-    public Direction setDirection(){
+    public Direction calculateDirection(){
         Direction direction;
 
         if(Math.random() < 0.5){

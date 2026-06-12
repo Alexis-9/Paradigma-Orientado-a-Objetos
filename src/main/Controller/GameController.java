@@ -204,21 +204,23 @@ public class GameController {
     private void resolveExplosion(Missile missile) {
         if (!missile.isExploding() && missile.collidesWith(plane)) {
             missile.triggerExplosion();
-            audio.play(Sound.EXPLOSION);
         }
 
         if (missile.isExploding() && !missile.isDamageApplied()) {
             ExplosionResult result = missile.getExplosion().resolveImpact(plane);
+            audio.play(Sound.EXPLOSION);
 
             player.addScore(result.getScore());
             player.checkExtraLife(currentLevel.getLevelNumber());
 
             if (result.isLethal()) {
                 loseLife();
+                audio.play(Sound.LOSE_LIFE);
             } else {
                 plane.reduceEnergy(result.getDamage());
                 if (plane.getCurrentEnergy() <= 0) {
                     loseLife();
+                    audio.play(Sound.LOSE_LIFE);
                 }
             }
 

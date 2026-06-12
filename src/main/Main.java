@@ -17,6 +17,7 @@ public class Main {
         JFrame frame = new JFrame("Sky Defense");
         frame.add(new GamePanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

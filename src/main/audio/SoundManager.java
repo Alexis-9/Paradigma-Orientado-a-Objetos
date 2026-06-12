@@ -104,13 +104,6 @@ public class SoundManager implements AudioPlayer {
      * @return resource path of the main.audio file
      */
     private String resolvePath(Sound sound) {
-        return switch (sound) {
-            case SHOOT      -> "/Sounds/droneShot.wav";
-            case EXPLOSION  -> "/Sounds/explosion.wav";
-            case LOSE_LIFE  -> "/Sounds/loseLife.wav";
-            case NEXT_LEVEL -> "/Sounds/levelUp.wav";
-            case BACKGROUND -> "/Sounds/background.wav";
-            case GAME_OVER  -> "/Sounds/gameOver.wav";
-        };
+        return sound.getPath();
     }
 }
