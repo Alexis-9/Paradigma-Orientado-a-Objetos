@@ -76,7 +76,7 @@ class MissileTest {
 
     @Test
     void collidesWith_overlappingPlane_returnsTrue() {
-        Missile missile = new Missile(100, 100, 260, 600);
+        Missile missile = new Missile(125, 125, 260, 600);
         Plane plane = new Plane(100, 100, 50, 50);
 
         assertTrue(missile.collidesWith(plane));
