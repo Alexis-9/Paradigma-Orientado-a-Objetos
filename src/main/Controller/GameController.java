@@ -262,7 +262,7 @@ public class GameController {
      */
     private void checkNextLevel() {
 
-        if (currentLevel.levelFinished(squadron.getDrones().isEmpty(),squadron.getDronesRemaining() == 0)) {
+        if (currentLevel.levelFinished(squadron.getDrones().isEmpty(),squadron.getDronesRemaining() == 0) && missiles.isEmpty()) {
             currentLevel.nextLevel();
             player.addScore(300);
             startLevel();

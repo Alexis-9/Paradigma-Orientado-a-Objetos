@@ -7,7 +7,7 @@ import java.awt.*;
 public class Drone extends Entity {
     private Direction direction;
 
-    private int shootCounter = 0;
+    private int shootCounter;
     private int shootCooldown;
 
     public Drone(int startX, int startY, int width, int height, Direction direction, int shootCooldown){
@@ -15,6 +15,7 @@ public class Drone extends Entity {
         setSize(width, height);
 
         this.direction = direction;
+        this.shootCounter = (int) (Math.random() * shootCooldown);
         this.shootCooldown = shootCooldown;
     }
 
