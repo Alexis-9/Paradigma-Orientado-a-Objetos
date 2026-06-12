@@ -19,7 +19,7 @@ public class Plane extends Entity{
      * POST:
      * - maxEnergy is set to 100.
      * - currentEnergy is set to maxEnergy.
-     * - speed is set to 240.
+     * - speed is set to 350.
      * - The plane image is loaded from resources.
      */
     public void setDefaultValues() {
@@ -28,10 +28,6 @@ public class Plane extends Entity{
         setSpeed(350);
 
         setImage(new ImageIcon(getClass().getResource(Images.PLANE.getPath())).getImage());
-        //hitboxWidth = getWidth() - 40;
-        //hitboxHeight = getHeight() - 40;
-        //hitboxOffsetX = 20;
-        //hitboxOffsetY = 20;
     }
 
     /**
@@ -116,6 +112,14 @@ public class Plane extends Entity{
         if (getImage() != null) {
             g.drawImage(getImage(), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
         }
+
+        // To test hitbox
+        /*Graphics2D g2 = (Graphics2D) g;
+
+        Rectangle bounds = getBounds();
+
+        g2.setColor(Color.RED);
+        g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);*/
     }
 
     /**
@@ -149,6 +153,35 @@ public class Plane extends Entity{
         currentEnergy = maxEnergy;
     }
 
+
+    /**
+     * Returns the collision hitbox of the plane.
+     *
+     * POST:
+     * - Returns a Rectangle centered within the sprite.
+     * - The hitbox width is 33% of the sprite width.
+     * - The hitbox height is 75% of the sprite height.
+     * - The returned Rectangle position is based on the current plane position.
+     * - The plane state is not modified.
+     *
+     * @return a Rectangle representing the plane collision area.
+     */
+    @Override
+    public Rectangle getBounds(){
+        // Declaring hitbox size
+        int hitboxWidth = getWidth() / 3;      // 33% of sprite width
+        int hitboxHeight = (int)(getHeight() * 0.75); // 75% of sprite height
+
+        int offsetX = (getWidth() - hitboxWidth) / 2;
+        int offsetY = (getHeight() - hitboxHeight) / 2;
+
+        return new Rectangle(
+                (int) getX() + offsetX,
+                (int) getY() + offsetY,
+                hitboxWidth,
+                hitboxHeight
+        );
+    }
 
     /**
      * Getters.

@@ -95,21 +95,24 @@ public class Explosion implements Updatable, Drawable {
     }
 
     /**
-     * Calculates the distance between the explosion center and the plane.
+     * Calculates the shortest distance between the explosion center and the plane hitbox.
      *
      * PRE:
-     * - plane != null.
+     * - plane != null
      *
      * POST:
-     * - Returns the Euclidean distance between the explosion and the plane.
-     * - The explosion state is not modified.
+     * - Returns the minimum distance between the explosion center and the plane collision area.
+     * - Returns 0 if the explosion center is inside the plane hitbox.
+     * - The returned value is always greater than or equal to 0.
+     * - Neither the explosion nor the plane state is modified.
      *
-     * @param plane Plane whose distance is calculated.
-     * @return Distance between the explosion center and the plane center.
+     * @param plane the plane whose collision area is evaluated
+     * @return the shortest distance between the explosion center and the plane hitbox
      */
     public double calculateDistance(Plane plane){
-        double dx = plane.getCenterX() - x;
-        double dy = plane.getCenterY() - y;
-        return Math.sqrt(dx * dx + dy * dy);
+        Rectangle bounds = plane.getBounds();
+        double nearestX = Math.max(bounds.x, Math.min(x, bounds.x + bounds.width));
+        double nearestY = Math.max(bounds.y, Math.min(y, bounds.y + bounds.height));
+        return Math.hypot(nearestX - x, nearestY - y);
     }
 }

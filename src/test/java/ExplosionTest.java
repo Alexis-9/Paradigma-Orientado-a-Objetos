@@ -48,13 +48,13 @@ class ExplosionTest {
     }
 
     @Test
-    void calculateDistance_returnsCorrectDistance() {
+    void resolveImpact_explosionTouchingHitbox_isLethal() {
         Plane plane = new Plane(0, 0, 50, 50);
-        Explosion explosion = new Explosion(55, 65);
+        Explosion explosion = new Explosion(10, 25); // exactamente sobre el borde de la hitbox
 
-        double distance = explosion.calculateDistance(plane);
+        ExplosionResult result = explosion.resolveImpact(plane);
 
-        assertEquals(50.0, distance);
+        assertTrue(result.isLethal());
     }
 
     @Test

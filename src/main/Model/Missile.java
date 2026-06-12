@@ -120,7 +120,7 @@ public class Missile extends Entity {
      * The missile state is not directly modified beyond setting the explosion reference.
      */
     public void explode(){
-        explosion = new Explosion((int) getX(), (int) getY());
+        explosion = new Explosion(getCenterX(), getCenterY());
     }
 
     /**
@@ -137,6 +137,18 @@ public class Missile extends Entity {
         return getY() >= explosionY;
     }
 
+    /**
+     * Triggers the missile explosion if it has not exploded yet.
+     *
+     * POST:
+     * - If exploding is false:
+     *   - exploding is set to true.
+     *   - explode() is invoked.
+     * - If exploding is true:
+     *   - No state is modified.
+     *
+     * - After execution, exploding is true.
+     */
     public void triggerExplosion(){
         if(!exploding){
             exploding = true;

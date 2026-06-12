@@ -99,9 +99,15 @@ public class Squadron {
     }
 
     /**
-     * Getters.
+     * Randomly selects a movement direction.
+     *
+     * POST:
+     * - Returns either Direction.RIGHT or Direction.LEFT.
+     * - Both directions have the same probability of being selected.
+     * - The object state is not modified.
+     *
+     * @return the selected direction
      */
-
     public Direction setDirection(){
         Direction direction;
 
@@ -113,6 +119,9 @@ public class Squadron {
         }
     }
 
+    /**
+     * Getters.
+     */
     public int getDronesRemaining() { return dronesRemaining; }
     public ArrayList<Drone> getDrones(){ return drones; }
 }
