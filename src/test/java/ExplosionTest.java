@@ -27,62 +27,81 @@ class ExplosionTest {
     }
 
     @Test
-    void calculateDistance_samePosition_returnsZero() {
+    void finished_beforeDuration_returnsFalse() {
         Explosion explosion = new Explosion(0, 0);
+
+        for (int i = 0; i < 29; i++) {
+            explosion.update(1);
+        }
+
+        assertFalse(explosion.finished());
+    }
+
+    @Test
+    void calculateDistance_zeroDistance() {
         Plane plane = new Plane(0, 0, 50, 50);
+        Explosion explosion = new Explosion(25, 25); // Starts at plane center X and Y
 
         double distance = explosion.calculateDistance(plane);
 
-        assertEquals(35.35533905932738, distance, 0.0001);
+        assertEquals(0, distance);
     }
 
     @Test
-    void calculateDistance_correctValue() {
-        Explosion explosion = new Explosion(0, 0);
-        Plane plane = new Plane(3, 4, 50, 50);
+    void calculateDistance_returnsCorrectDistance() {
+        Plane plane = new Plane(0, 0, 50, 50);
+        Explosion explosion = new Explosion(55, 65);
 
         double distance = explosion.calculateDistance(plane);
 
-        assertEquals(40.311288741492746, distance, 0.0001);
+        assertEquals(50.0, distance);
     }
 
     @Test
-    void resolveImpact_farDistance_lowDamage() {
+    void resolveImpact_farDistance_givePointsNoDamage() {
+        Plane plane = new Plane(175, 175, 50, 50); // Distance around 282
         Explosion explosion = new Explosion(0, 0);
-        Plane plane = new Plane(300, 300, 50, 50);
 
         ExplosionResult result = explosion.resolveImpact(plane);
 
+        assertEquals(40, result.getScore());
+        assertEquals(0,  result.getDamage());
         assertFalse(result.isLethal());
-        assertEquals(0, result.getDamage());
     }
 
     @Test
-    void resolveImpact_mediumDistance_mediumDamage() {
+    void resolveImpact_mediumDistance_lowDamage() {
+        Plane plane = new Plane(75, -25, 50, 50); // Distance around 100
         Explosion explosion = new Explosion(0, 0);
-        Plane plane = new Plane(60, 0, 50, 50);
 
         ExplosionResult result = explosion.resolveImpact(plane);
 
+        assertEquals(20, result.getScore());
         assertEquals(20, result.getDamage());
+        assertFalse(result.isLethal());
     }
 
     @Test
     void resolveImpact_closeDistance_highDamage() {
+        Plane plane = new Plane(25, -25, 50, 50); // Distance around 50
         Explosion explosion = new Explosion(0, 0);
-        Plane plane = new Plane(10, 0, 50, 50);
+
+        ExplosionResult result = explosion.resolveImpact(plane);
+
+        assertEquals(0,  result.getScore());
+        assertEquals(40, result.getDamage());
+        assertFalse(result.isLethal());
+    }
+
+    @Test
+    void resolveImpact_veryCloseDistance_isLethal() {
+        Plane plane = new Plane(-15, -25, 50, 50); // Distance around 10
+        Explosion explosion = new Explosion(0, 0);
 
         ExplosionResult result = explosion.resolveImpact(plane);
 
         assertEquals(0, result.getScore());
-    }
-
-    @Test
-    void resolveImpact_veryClose_isLethal() {
-        Plane plane = new Plane(0, 0, 50, 50);
-        Explosion explosion = new Explosion(25, 25);
-
-        ExplosionResult result = explosion.resolveImpact(plane);
+        assertEquals(0, result.getDamage());
         assertTrue(result.isLethal());
     }
 }
