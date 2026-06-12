@@ -267,6 +267,7 @@ public class GameController {
         if (currentLevel.levelFinished(squadron.getDrones().isEmpty(),squadron.getDronesRemaining() == 0) && missiles.isEmpty()) {
             currentLevel.nextLevel();
             player.addScore(300);
+            player.checkExtraLife(currentLevel.getLevelNumber());
             startLevel();
             audio.play(Sound.NEXT_LEVEL);
         }
