@@ -69,17 +69,11 @@ public class Squadron {
      * - Level shootCooldown is used as drone parameter.
      */
     public void spawnDrone(){
-        int randomY = (int)(Math.random() * 150);
-        Direction direction;
-        int startX;
+        Direction direction = setDirection();
 
-        if(Math.random() < 0.5){
-            direction = Direction.RIGHT;
-            startX = -48;
-        } else {
-            direction = Direction.LEFT;
-            startX = screenWidth;
-        }
+        int randomY = (int)(Math.random() * 150);
+
+        int startX = direction == Direction.RIGHT ? -48 : screenWidth;
 
         Drone drone = new Drone(startX, randomY, 70, 70, direction, (int) level.getShootCooldown());
         drone.setDefaultValues();
@@ -107,6 +101,18 @@ public class Squadron {
     /**
      * Getters.
      */
+
+    public Direction setDirection(){
+        Direction direction;
+
+        if(Math.random() < 0.5){
+            return Direction.RIGHT;
+
+        } else {
+            return Direction.LEFT;
+        }
+    }
+
     public int getDronesRemaining() { return dronesRemaining; }
     public ArrayList<Drone> getDrones(){ return drones; }
 }

@@ -27,6 +27,8 @@ public class Level {
      * - shootCooldown decreases by 15%.
      */
     public void nextLevel() {
+        if (levelIsInfinite()){return;}
+
         levelNumber++;
         droneSpeed += droneSpeed * 0.15;
         missileSpeed += missileSpeed * 0.15;
@@ -61,13 +63,10 @@ public class Level {
      *   - the level is not infinite.
      * - Does not modify Level or Squadron state.
      *
-     * @param squadron Squadron to evaluate.
      * @return true if the level is finished, false otherwise.
      */
-    public boolean levelFinished(Squadron squadron) {
-        return squadron.getDrones().isEmpty()
-                && squadron.getDronesRemaining() == 0
-                && !levelIsInfinite();
+    public boolean levelFinished(boolean isDroneEmpty, boolean notDronesRemaining) {
+        return isDroneEmpty && notDronesRemaining && !levelIsInfinite();
     }
 
     /**

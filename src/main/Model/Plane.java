@@ -74,7 +74,7 @@ public class Plane extends Entity{
         double newX = getX();
         double newY = getY();
 
-        if (newX < -20) newX = -20;
+        if (newX < 0) newX = 0;
         if (newX + getWidth() > screenWidth) newX = screenWidth - getWidth();
         if (newY < topBound) newY = topBound;
         if (newY + getHeight() > screenHeight) newY = screenHeight - getHeight();
@@ -131,10 +131,12 @@ public class Plane extends Entity{
      * @param amount energy to subtract
      */
     public void reduceEnergy(int amount){
+        if (amount < 0){return;}
         currentEnergy -= amount;
         if (currentEnergy <= 0) {
             currentEnergy = 0;
         }
+
     }
 
     /**

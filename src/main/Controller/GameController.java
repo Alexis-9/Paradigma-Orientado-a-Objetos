@@ -261,7 +261,8 @@ public class GameController {
      *   - Next level sound is played.
      */
     private void checkNextLevel() {
-        if (currentLevel.levelFinished(squadron)) {
+
+        if (currentLevel.levelFinished(squadron.getDrones().isEmpty(),squadron.getDronesRemaining() == 0)) {
             currentLevel.nextLevel();
             player.addScore(300);
             startLevel();

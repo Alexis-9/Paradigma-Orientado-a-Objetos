@@ -1,9 +1,9 @@
 package main.Model;
 
 public enum Images {
-    DRONE("/Images/Drone/Drone.png"),
-    PLANE("/Images/Plane/Skins/DefaultSkin.png"),
-    MISSILE("/Images/Missile/Missile.png");
+    DRONE("/main/Images/Drone/Drone.png"),
+    PLANE("/main/Images/Plane/Skins/DefaultSkin.png"),
+    MISSILE("/main/Images/Missile/Missile.png");
 
     private final String path;
 
