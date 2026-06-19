@@ -6,7 +6,7 @@ public abstract class Entity implements Updatable, Drawable, Collidable {
 
     private double speed;
 
-    private double x;
+        private double x;
     private double y;
 
     private int width;

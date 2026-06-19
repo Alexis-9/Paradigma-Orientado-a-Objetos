@@ -23,4 +23,12 @@ public class Main {
         frame.setVisible(true);
 
     }
+
+    // Cambiar tamaño de explosiones
+    // Clase para Tests
+    // Implementar bien las interfaces de actualizar y dibujar
+    // Imagenes por nivel
+    // Menú
+    // Instrucciones
+    // Dificultades
 }
