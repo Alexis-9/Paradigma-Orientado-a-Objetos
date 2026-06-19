@@ -2,7 +2,7 @@ package main.Model;
 
 import java.awt.*;
 
-public class Explosion implements Updatable, Drawable {
+public class Explosion extends Entity {
 
     private double x;
     private double y;
@@ -66,6 +66,11 @@ public class Explosion implements Updatable, Drawable {
     public void draw(Graphics g){
         g.setColor(new Color(255, 0, 0, 100));
         g.fillOval((int) x - radius, (int) y - radius, radius * 2, radius * 2);
+    }
+
+    @Override
+    public void setDefaultValues() {
+
     }
 
     /**
