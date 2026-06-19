@@ -144,7 +144,7 @@ public class Drone extends Entity {
      * @param explosionY Y-coordinate at which the missile explodes.
      * @return A new Missile if the drone can shoot; null otherwise.
      */
-    public Missile tryShoot(double missileSpeed, int explosionY){
+    public Missile tryShoot(double missileSpeed, double explosionSize, int explosionY){
         if(shootCounter < shootCooldown){return null;}
 
         shootCounter = 0;
@@ -153,7 +153,8 @@ public class Drone extends Entity {
                 getCenterX(),
                 getY(),
                 missileSpeed,
-                explosionY
+                explosionY,
+                explosionSize
         );
     }
 }

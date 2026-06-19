@@ -3,9 +3,10 @@ package main.Model;
 import javax.swing.*;
 import java.awt.*;
 
-public class Missile extends Entity {
+public class Missile extends Entity implements Collidable {
 
-    private int explosionY;
+    private final int explosionY;
+    private final double explosionSize;
 
     private Explosion explosion;
 
@@ -13,12 +14,13 @@ public class Missile extends Entity {
     private boolean finished;
     private boolean damageApplied;
 
-    public Missile(double startX, double startY, double speed, int explosionY) {
+    public Missile(double startX, double startY, double speed, int explosionY, double explosionSize) {
         setPosition(startX, startY);
         setSize(16, 32);
         setSpeed(speed);
 
         this.explosionY = explosionY;
+        this.explosionSize = explosionSize;
 
         exploding = false;
         finished = false;
@@ -120,7 +122,7 @@ public class Missile extends Entity {
      * The missile state is not directly modified beyond setting the explosion reference.
      */
     public void explode(){
-        explosion = new Explosion(getCenterX(), getCenterY());
+        explosion = new Explosion(getCenterX(), getCenterY(), explosionSize);
     }
 
     /**

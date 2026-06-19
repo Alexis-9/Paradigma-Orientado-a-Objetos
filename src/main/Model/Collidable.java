@@ -1,7 +1,13 @@
 package main.Model;
-
 import java.awt.*;
 
 public interface Collidable {
-    Rectangle getBounds();
+    double getX();
+    double getY();
+    int getWidth();
+    int getHeight();
+
+    default Rectangle getBounds() {
+        return new Rectangle((int) getX(), (int) getY(), getWidth(), getHeight());
+    }
 }

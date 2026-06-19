@@ -6,14 +6,16 @@ public class Explosion implements Updatable, Drawable {
 
     private double x;
     private double y;
+    private double size;
     private int radius;
     private int duration;
     private int currentFrame;
 
-    public Explosion (double x, double y){
+    public Explosion (double x, double y, double size){
         this.x = x;
         this.y = y;
-        radius = 150;
+        this.size = size;
+        radius = (int) size;
         duration = 30;
         currentFrame = 0;
     }
@@ -83,11 +85,11 @@ public class Explosion implements Updatable, Drawable {
     public ExplosionResult resolveImpact(Plane plane){
         double distance = calculateDistance(plane);
 
-        if (distance > 150){
+        if (distance > size){
             return new ExplosionResult(40, 0, false);
-        } else if (distance >= 80){
+        } else if (distance >= (size * 0.80)){
             return new ExplosionResult(20, 20, false);
-        } else if (distance >= 20){
+        } else if (distance >= (size * 0.20)){
             return new ExplosionResult(0, 40, false);
         } else {
             return new ExplosionResult(0, 0, true);
