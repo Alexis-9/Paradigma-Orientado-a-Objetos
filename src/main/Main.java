@@ -20,7 +20,7 @@ public class Main {
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true); // comment
+        frame.setVisible(true);
 
     }
 }

@@ -6,11 +6,13 @@ public class Level {
     private double droneSpeed;
     private double missileSpeed;
     private double shootCooldown;
+    private double explosionSize;
 
     public Level(int levelNumber){
         this.levelNumber = levelNumber;
         droneSpeed = 135;
         missileSpeed = 260;
+        explosionSize = 75;
         shootCooldown = 90;
     }
 
@@ -32,6 +34,7 @@ public class Level {
         levelNumber++;
         droneSpeed += droneSpeed * 0.15;
         missileSpeed += missileSpeed * 0.15;
+        explosionSize += explosionSize * 0.15;
         shootCooldown -= shootCooldown * 0.15;
     }
 
@@ -74,6 +77,7 @@ public class Level {
      */
     public double getDroneSpeed() { return droneSpeed; }
     public double getMissileSpeed() { return missileSpeed; }
+    public double getExplosionSize() { return explosionSize; }
     public double getShootCooldown() { return shootCooldown; }
     public int getLevelNumber() { return levelNumber; }
 }
