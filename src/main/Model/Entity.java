@@ -4,9 +4,7 @@ import java.awt.*;
 
 public abstract class Entity {
 
-    private double speed;
-
-        private double x;
+    private double x;
     private double y;
 
     private int width;
@@ -14,21 +12,18 @@ public abstract class Entity {
 
     private Image img;
 
-    protected void moveBy(double dx, double dy) { this.x += dx; this.y += dy; }
 
     /**
      * Setters.
      */
     protected void setPosition(double x, double y) { this.x = x; this.y = y; }
     protected void setSize(int width, int height) { this.width = width; this.height = height; }
-    protected void setSpeed(double speed) {  //ESTA VA EN MOVIMIENTO
-        if (speed < 0) return;
-        this.speed = speed; }
+
 
     /**
      * Getters.
      */
-    protected double getSpeed() { return speed; } //ESTA NO VA
+
     protected void setImage(Image img) { this.img = img; }
     protected Image getImage() { return img; }
 

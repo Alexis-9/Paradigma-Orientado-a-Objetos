@@ -3,7 +3,7 @@ package main.Model;
 import javax.swing.*;
 import java.awt.*;
 
-public class Plane extends Entity implements Collidable{
+public class Plane extends MovableEntity implements Collidable{
     private int maxEnergy;
     private int currentEnergy;
 

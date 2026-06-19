@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class Drone extends Entity {
+public class Drone extends MovableEntity {
     private Direction direction;
 
     private int shootCounter;

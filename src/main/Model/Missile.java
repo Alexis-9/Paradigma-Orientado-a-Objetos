@@ -3,7 +3,7 @@ package main.Model;
 import javax.swing.*;
 import java.awt.*;
 
-public class Missile extends Entity implements Collidable {
+public class Missile extends MovableEntity implements Collidable {
 
     private final int explosionY;
     private final double explosionSize;
