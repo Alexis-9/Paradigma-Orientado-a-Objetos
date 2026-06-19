@@ -1,10 +1,10 @@
 package test.java;
 
-import org.junit.platform.suite.api.SelectClasses;
-import org.junit.platform.suite.api.Suite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-@Suite
-@SelectClasses({
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
         ExplosionTest.class,
         GameControllerTest.class,
         LevelTest.class,
