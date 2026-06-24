@@ -5,10 +5,11 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener, InputSource {
 
-    private boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed;
+    private boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed, mutePressed;
 
     private boolean escConsumed = false;
     private boolean enterConsumed = false;
+    private boolean muteConsumed = false;
 
     /**
      * Handles typed key events.
@@ -43,6 +44,7 @@ public class KeyHandler implements KeyListener, InputSource {
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT  -> rightPressed = true;
             case KeyEvent.VK_ENTER                 -> enterPressed = true;
             case KeyEvent.VK_ESCAPE                -> escPressed   = true;
+            case KeyEvent.VK_M                     -> mutePressed  = true;
         }
     }
 
@@ -67,6 +69,7 @@ public class KeyHandler implements KeyListener, InputSource {
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT  -> rightPressed = false;
             case KeyEvent.VK_ENTER                 -> { enterPressed = false; enterConsumed = false; }
             case KeyEvent.VK_ESCAPE                -> { escPressed   = false; escConsumed   = false; }
+            case KeyEvent.VK_M                     -> { mutePressed  = false; muteConsumed  = false; }
         }
     }
 
@@ -101,6 +104,24 @@ public class KeyHandler implements KeyListener, InputSource {
         // consumed input avoids multiple triggers per key press
         if (enterPressed && !enterConsumed) {
             enterConsumed = true;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Consumes a Mute (M) key press event if available.
+     *
+     * POST:
+     * - Returns true only once per key press.
+     * - Once consumed, repeated calls return false until key is released again.
+     *
+     * @return true if Mute press was consumed; false otherwise
+     */
+    public boolean consumeMutePress() {
+        // consumed input avoids multiple triggers per key press
+        if (mutePressed && !muteConsumed) {
+            muteConsumed = true;
             return true;
         }
         return false;

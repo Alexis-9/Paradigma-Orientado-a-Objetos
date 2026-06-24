@@ -13,6 +13,7 @@ public class GameController {
     public static final int SCREEN_WIDTH = TILE_SIZE * 16;   // 768
     public static final int SCREEN_HEIGHT = TILE_SIZE * 16;  // 768
     private static final int TOP_BOUND = 200;
+    private static final int STAR_COUNT = 150;
 
     private GameState gameState = GameState.RUNNING;
 
@@ -21,6 +22,7 @@ public class GameController {
     private Squadron squadron;
     private Level currentLevel;
     private ArrayList<Missile> missiles;
+    private Starfield starfield;
 
     private final InputSource input;
     private final AudioPlayer audio;
@@ -53,6 +55,7 @@ public class GameController {
         currentLevel = new Level(1);
         missiles = new ArrayList<>();
         squadron = new Squadron(SCREEN_WIDTH, currentLevel);
+        starfield = new Starfield(SCREEN_WIDTH, SCREEN_HEIGHT, STAR_COUNT);
 
         gameState = GameState.RUNNING;
     }
@@ -85,6 +88,7 @@ public class GameController {
      */
     public void update(float delta) {
         if (gameState == GameState.PAUSED) {
+            if (input.consumeMutePress()) toggleMute();
             if (input.consumeEscPress()) resume();
             return;
         }
@@ -99,6 +103,7 @@ public class GameController {
 
         if (input.consumeEscPress()) { pause(); return; }
 
+        starfield.update(delta);
         movementInput(delta);
         squadron.update(delta);
         dronesShoot();
@@ -274,6 +279,17 @@ public class GameController {
     }
 
     /**
+     * Toggles the muted state of the game audio.
+     *
+     * POST:
+     * - If audio was playing, it becomes muted.
+     * - If audio was muted, it is restored.
+     */
+    private void toggleMute() {
+        audio.setMuted(!audio.isMuted());
+    }
+
+    /**
      * Pauses the game.
      *
      * POST:
@@ -298,4 +314,6 @@ public class GameController {
     public Squadron getSquadron() { return squadron; }
     public Level getCurrentLevel() { return currentLevel; }
     public List<Missile> getMissiles() { return missiles; }
+    public Starfield getStarfield() { return starfield; }
+    public boolean isMuted() { return audio.isMuted();}
 }

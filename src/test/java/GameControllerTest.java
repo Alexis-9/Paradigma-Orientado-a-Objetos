@@ -12,7 +12,7 @@ class GameControllerTest {
 
     // Fakes simples para no depender del teclado ni del audio real.
     static class FakeInput implements InputSource {
-        boolean up, down, left, right, esc, enter;
+        boolean up, down, left, right, esc, enter, mute;
 
         public boolean isUpPressed() { return up; }
         public boolean isDownPressed() { return down; }
@@ -30,12 +30,23 @@ class GameControllerTest {
             enter = false;
             return pressed;
         }
+
+        public boolean consumeMutePress() {
+            boolean pressed = mute;
+            mute = false;
+            return pressed;
+        }
     }
 
     static class FakeAudio implements AudioPlayer {
+        boolean muted = false;
+
         public void play(Sound sound) {}
         public void playBackground(Sound sound) {}
         public void stopBackground() {}
+
+        public void setMuted(boolean muted) { this.muted = muted; }
+        public boolean isMuted() { return muted; }
     }
 
     @Test
@@ -99,5 +110,49 @@ class GameControllerTest {
         controller.update(0.016f);
 
         assertEquals(startX, controller.getPlane().getX());
+    }
+
+    @Test
+    void update_mutePressWhilePaused_togglesMute() {
+        FakeInput input = new FakeInput();
+        GameController controller = new GameController(input, new FakeAudio());
+
+        input.esc = true;
+        controller.update(0.016f); // pausa
+
+        assertFalse(controller.isMuted());
+
+        input.mute = true;
+        controller.update(0.016f); // mutea
+
+        assertTrue(controller.isMuted());
+    }
+
+    @Test
+    void update_mutePressTwiceWhilePaused_restoresAudio() {
+        FakeInput input = new FakeInput();
+        GameController controller = new GameController(input, new FakeAudio());
+
+        input.esc = true;
+        controller.update(0.016f); // pausa
+
+        input.mute = true;
+        controller.update(0.016f); // mutea
+
+        input.mute = true;
+        controller.update(0.016f); // desmutea
+
+        assertFalse(controller.isMuted());
+    }
+
+    @Test
+    void update_mutePressWhileRunning_doesNotToggle() {
+        FakeInput input = new FakeInput();
+        GameController controller = new GameController(input, new FakeAudio());
+
+        input.mute = true;
+        controller.update(0.016f); // corriendo, no en pausa
+
+        assertFalse(controller.isMuted());
     }
 }

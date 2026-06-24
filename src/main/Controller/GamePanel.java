@@ -53,6 +53,10 @@ public class GamePanel extends JPanel {
         int w = GameController.SCREEN_WIDTH;
         int h = GameController.SCREEN_HEIGHT;
 
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, w, h);
+        controller.getStarfield().draw(g);
+
         if (controller.getGameState() == GameState.GAME_OVER) {
             drawGameOver(g, w, h);
             return;
@@ -137,5 +141,10 @@ public class GamePanel extends JPanel {
         g.setColor(Color.YELLOW);
         g.setFont(new Font("Arial", Font.BOLD, 48));
         g.drawString("PAUSA", w / 2 - 80, h / 2);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        String estado = controller.isMuted() ? "Sonido: OFF" : "Sonido: ON";
+        g.drawString("M - " + estado, w / 2 - 60, h / 2 + 40);
     }
 }

@@ -7,6 +7,8 @@ import java.net.URL;
 public class SoundManager implements AudioPlayer {
 
     private Clip backgroundClip;
+    private boolean muted = false;
+    private Sound currentBackground;
 
     /**
      * Plays a short sound effect once.
@@ -23,6 +25,7 @@ public class SoundManager implements AudioPlayer {
      */
     @Override
     public void play(Sound sound) {
+        if (muted) return;
         String path = resolvePath(sound);
         try {
             URL url = getClass().getResource(path);
@@ -58,6 +61,8 @@ public class SoundManager implements AudioPlayer {
      */
     @Override
     public void playBackground(Sound sound) {
+        this.currentBackground = sound;
+        if (muted) return;
         stopBackground();
         String path = resolvePath(sound);
         try {
@@ -89,6 +94,40 @@ public class SoundManager implements AudioPlayer {
             backgroundClip.stop();
             backgroundClip.close();
         }
+    }
+
+    /**
+     * Sets the muted state of the audio system.
+     *
+     * POST:
+     * - If muted, the background music is stopped.
+     * - If unmuted, the last background track is resumed (if any).
+     * - New sound effects are suppressed while muted.
+     *
+     * @param muted true to silence audio, false to restore it.
+     */
+    @Override
+    public void setMuted(boolean muted) {
+        this.muted = muted;
+        if (muted) {
+            stopBackground();
+        } else if (currentBackground != null) {
+            playBackground(currentBackground);
+        }
+    }
+
+    /**
+     * Returns whether the audio system is currently muted.
+     *
+     * POST:
+     * - Returns the current muted state.
+     * - No state is modified.
+     *
+     * @return true if muted; false otherwise.
+     */
+    @Override
+    public boolean isMuted() {
+        return muted;
     }
 
     /**
