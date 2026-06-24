@@ -7,6 +7,7 @@ import java.net.URL;
 public class SoundManager implements AudioPlayer {
 
     private Clip backgroundClip;
+    private boolean muted = false;
 
     /**
      * Plays a short sound effect once.
@@ -18,23 +19,31 @@ public class SoundManager implements AudioPlayer {
      * - The corresponding main.audio clip is loaded and played once.
      * - The clip is automatically closed after finishing.
      * - If the main.audio resource is not found, no action is performed.
+     * - If audio is muted, no sound is played.
      *
      * @param sound sound identifier to play
      */
     @Override
     public void play(Sound sound) {
+        if (muted) {
+            return;
+        }
+
         String path = resolvePath(sound);
+
         try {
             URL url = getClass().getResource(path);
             if (url == null) return;
 
             AudioInputStream stream = AudioSystem.getAudioInputStream(url);
             Clip clip = AudioSystem.getClip();
+
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     clip.close();
                 }
             });
+
             clip.open(stream);
             clip.start();
 
@@ -53,13 +62,20 @@ public class SoundManager implements AudioPlayer {
      * - Previous background music is stopped and closed.
      * - New background clip is loaded and started in loop mode.
      * - The clip remains active until explicitly stopped.
+     * - If audio is muted, no background music is played.
      *
      * @param sound background sound identifier
      */
     @Override
     public void playBackground(Sound sound) {
         stopBackground();
+
+        if (muted) {
+            return;
+        }
+
         String path = resolvePath(sound);
+
         try {
             URL url = getClass().getResource(path);
             if (url == null) return;
@@ -89,6 +105,45 @@ public class SoundManager implements AudioPlayer {
             backgroundClip.stop();
             backgroundClip.close();
         }
+    }
+
+    /**
+     * Toggles the mute state of the audio system.
+     *
+     * PRE:
+     * - Audio manager is initialized.
+     *
+     * POST:
+     * - If audio was muted, it becomes unmuted.
+     * - If audio was unmuted, it becomes muted.
+     * - If audio becomes muted, the current background music is stopped.
+     * - No sound effect is played by this method.
+     */
+    @Override
+    public void toggleMute() {
+        muted = !muted;
+
+        if (muted) {
+            stopBackground();
+        }
+    }
+
+    /**
+     * Returns whether the audio system is currently muted.
+     *
+     * PRE:
+     * - Audio manager is initialized.
+     *
+     * POST:
+     * - Returns true if audio is muted.
+     * - Returns false if audio is enabled.
+     * - No audio state is modified.
+     *
+     * @return true if the audio system is muted; false otherwise
+     */
+    @Override
+    public boolean isMuted() {
+        return muted;
     }
 
     /**

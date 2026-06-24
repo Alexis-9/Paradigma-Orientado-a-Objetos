@@ -5,11 +5,12 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener, InputSource {
 
-    private boolean upPressed,downPressed,leftPressed,rightPressed, enterPressed, escPressed;
+    private boolean upPressed, downPressed, leftPressed, rightPressed;
+    private boolean enterPressed, escPressed, mutePressed;
 
     private boolean escConsumed = false;
     private boolean enterConsumed = false;
-
+    private boolean muteConsumed = false;
     /**
      * Handles typed key events.
      *
@@ -43,6 +44,7 @@ public class KeyHandler implements KeyListener, InputSource {
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT  -> rightPressed = true;
             case KeyEvent.VK_ENTER                 -> enterPressed = true;
             case KeyEvent.VK_ESCAPE                -> escPressed   = true;
+            case KeyEvent.VK_M                     -> mutePressed = true;
         }
     }
 
@@ -67,6 +69,7 @@ public class KeyHandler implements KeyListener, InputSource {
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT  -> rightPressed = false;
             case KeyEvent.VK_ENTER                 -> { enterPressed = false; enterConsumed = false; }
             case KeyEvent.VK_ESCAPE                -> { escPressed   = false; escConsumed   = false; }
+            case KeyEvent.VK_M                     -> {mutePressed = false; muteConsumed = false;}
         }
     }
 
@@ -103,6 +106,17 @@ public class KeyHandler implements KeyListener, InputSource {
             enterConsumed = true;
             return true;
         }
+        return false;
+    }
+
+
+    @Override
+    public Boolean consumeMutePress() {
+        if (mutePressed && !muteConsumed) {
+            muteConsumed = true;
+            return true;
+        }
+
         return false;
     }
 

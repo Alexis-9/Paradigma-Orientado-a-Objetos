@@ -7,4 +7,5 @@ public interface InputSource {
     boolean isRightPressed();
     boolean consumeEscPress();
     boolean consumeEnterPress();
+    Boolean consumeMutePress();
 }

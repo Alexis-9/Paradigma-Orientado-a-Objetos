@@ -14,7 +14,7 @@ public class GameController {
     public static final int SCREEN_HEIGHT = TILE_SIZE * 16;  // 768
     private static final int TOP_BOUND = 200;
 
-    private GameState gameState = GameState.RUNNING;
+    private GameState gameState = GameState.MENU;
 
     private Player player;
     private Plane plane;
@@ -29,9 +29,8 @@ public class GameController {
         this.input = input;
         this.audio = audio;
         startNewGame();
-        audio.playBackground(Sound.BACKGROUND);
+        gameState = GameState.MENU;
     }
-
     /**
      * Initializes a new game session.
      *
@@ -76,16 +75,36 @@ public class GameController {
      * - delta >= 0.
      *
      * POST:
+     * - Mute input is processed before any game state logic.
+     * - Audio may be muted or unmuted if the mute key is pressed.
      * - Game state is updated according to current GameState.
-     * - Player input is processed.
-     * - Plane, squadron and missiles are updated.
-     * - Game progression (levels, lives, game over) is evaluated.
+     * - Player input is processed when the game is running.
+     * - Plane, squadron and missiles are updated when the game is running.
+     * - Game progression (levels, lives, game over) is evaluated when the game is running.
      *
      * @param delta time elapsed since last update
      */
     public void update(float delta) {
+        if (input.consumeMutePress()) {
+            audio.toggleMute();
+
+            if (!audio.isMuted() && gameState == GameState.RUNNING) {
+                audio.playBackground(Sound.BACKGROUND);
+            }
+        }
+
+        if (gameState == GameState.MENU) {
+            if (input.consumeEnterPress()) {
+                startNewGame();
+                audio.playBackground(Sound.BACKGROUND);
+            }
+            return;
+        }
+
         if (gameState == GameState.PAUSED) {
-            if (input.consumeEscPress()) resume();
+            if (input.consumeEscPress()) {
+                resume();
+            }
             return;
         }
 
@@ -97,7 +116,10 @@ public class GameController {
             return;
         }
 
-        if (input.consumeEscPress()) { pause(); return; }
+        if (input.consumeEscPress()) {
+            pause();
+            return;
+        }
 
         movementInput(delta);
         squadron.update(delta);
@@ -105,7 +127,6 @@ public class GameController {
         updateMissiles(delta);
         checkNextLevel();
     }
-
     /**
      * Processes player movement input and updates plane position.
      *
