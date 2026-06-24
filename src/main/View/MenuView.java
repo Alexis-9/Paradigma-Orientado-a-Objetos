@@ -12,10 +12,19 @@ public class MenuView {
         this.screenHeight = screenHeight;
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, boolean audioMuted) {
         drawBackground(g);
         drawTitle(g);
         drawPlayText(g);
+        drawSoundStatus(g, audioMuted);
+    }
+
+    private void drawSoundStatus(Graphics g, boolean audioMuted) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+
+        String soundText = audioMuted ? "[M] SOUND: OFF" : "[M] SOUND: ON";
+        g.drawString(soundText, getCenteredTextX(g, soundText), 500);
     }
 
     private void drawBackground(Graphics g) {

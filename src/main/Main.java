@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Main {
 
 
-    /**
+    /**SW
      * Starts the game and graphics.
      *
      * @param args

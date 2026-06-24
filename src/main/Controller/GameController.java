@@ -25,6 +25,20 @@ public class GameController {
     private final InputSource input;
     private final AudioPlayer audio;
 
+    /**
+     * Returns whether the audio system is currently muted.
+     *
+     * POST:
+     * - Returns true if audio is muted.
+     * - Returns false if audio is enabled.
+     * - No game state is modified.
+     *
+     * @return true if audio is muted; false otherwise
+     */
+    public boolean isAudioMuted() {
+        return audio.isMuted();
+    }
+
     public GameController(InputSource input, AudioPlayer audio) {
         this.input = input;
         this.audio = audio;

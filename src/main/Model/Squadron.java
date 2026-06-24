@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class Squadron {
 
+    private static final int DRONE_MIN_Y = 120;
+    private static final int DRONE_SPAWN_RANGE = 100;
+
     private ArrayList<Drone> drones;
     private int dronesRemaining;
     private int spawnCounter;
@@ -56,7 +59,7 @@ public class Squadron {
     }
 
     /**
-     * Spawns a new drone in a random position and direction.
+     * Spawns a new drone in a random playable vertical position and direction.
      *
      * PRE:
      * - level != null.
@@ -65,13 +68,14 @@ public class Squadron {
      * POST:
      * - A new Drone is created and added to the list.
      * - Drone direction is randomly LEFT or RIGHT.
-     * - Drone starts outside screen boundaries.
+     * - Drone starts outside horizontal screen boundaries.
+     * - Drone vertical position is generated below the HUD area.
      * - Level shootCooldown is used as drone parameter.
      */
     public void spawnDrone(){
         Direction direction = calculateDirection();
 
-        int randomY = (int)(Math.random() * 150);
+        int randomY = DRONE_MIN_Y + (int)(Math.random() * DRONE_SPAWN_RANGE);
 
         int startX = direction == Direction.RIGHT ? -48 : screenWidth;
 
@@ -102,18 +106,15 @@ public class Squadron {
      * Randomly selects a movement direction.
      *
      * POST:
-     * - Returns either Direction.RIGHT or Direction.LEFT.
+     * - Returns either Direction. RIGHT or Direction.LEFT.
      * - Both directions have the same probability of being selected.
      * - The object state is not modified.
      *
      * @return the selected direction
      */
     public Direction calculateDirection(){
-        Direction direction;
-
         if(Math.random() < 0.5){
             return Direction.RIGHT;
-
         } else {
             return Direction.LEFT;
         }
