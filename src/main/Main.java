@@ -23,11 +23,10 @@ public class Main {
 
     }
 
-    // Cambiar tamaño de explosiones
-    // Clase para Tests
-    // Implementar bien las interfaces de actualizar y dibujar
-    // Imagenes por nivel
-    // Menú
     // Instrucciones
-    // Dificultades
+    // Agregar texto en el centro de la pantalla al pasar de nivel
+    // Adaptar tests
+    // Botones en menu
+    // Borrar star y starfield y todas sus implementaciones
+
 }
