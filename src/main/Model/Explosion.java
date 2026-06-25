@@ -1,5 +1,6 @@
 package main.Model;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Explosion extends Entity {
@@ -18,6 +19,14 @@ public class Explosion extends Entity {
         radius = (int) size;
         duration = 30;
         currentFrame = 0;
+
+        setDefaultValues();
+    }
+
+
+    @Override
+    public void setDefaultValues() {
+
     }
 
     /**
@@ -66,11 +75,6 @@ public class Explosion extends Entity {
     public void draw(Graphics g){
         g.setColor(new Color(255, 0, 0, 100));
         g.fillOval((int) x - radius, (int) y - radius, radius * 2, radius * 2);
-    }
-
-    @Override
-    public void setDefaultValues() {
-
     }
 
     /**

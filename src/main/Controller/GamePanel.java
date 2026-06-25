@@ -36,8 +36,6 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         addKeyListener(keyHandler);
 
-        SwingUtilities.invokeLater(this::requestFocusInWindow);
-
         gameTimer = new Timer(1000 / FPS, e -> {
             controller.update(DELTA);
             repaint();
@@ -234,6 +232,6 @@ public class GamePanel extends JPanel {
     private void drawLevelUp(Graphics g, int w, int h) {
         g.setColor(Color.BLUE);
         g.setFont(new Font("Arial", Font.BOLD, 48));
-        g.drawString("Nivel " + controller.getCurrentLevel().getLevelNumber(), w/2 -150, h/2);
+        g.drawString("Nivel " + controller.getCurrentLevel().getLevelNumber(), w/2 - 80, h/2);
     }
 }

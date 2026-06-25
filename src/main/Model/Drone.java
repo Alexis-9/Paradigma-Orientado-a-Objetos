@@ -131,7 +131,7 @@ public class Drone extends MovableEntity {
      * - shootCooldown >= 0.
      *
      * POST:
-     * - If shootCounter < shootCooldown:
+     * - If shootCounter < shootCooldown or getCenterX() out of screen:
      *   - Returns null.
      *   - shootCounter remains unchanged.
      *
@@ -144,8 +144,8 @@ public class Drone extends MovableEntity {
      * @param explosionY Y-coordinate at which the missile explodes.
      * @return A new Missile if the drone can shoot; null otherwise.
      */
-    public Missile tryShoot(double missileSpeed, double explosionSize, int explosionY){
-        if(shootCounter < shootCooldown){return null;}
+    public Missile tryShoot(double missileSpeed, double explosionSize, int explosionY, int screenWidth){
+        if(shootCounter < shootCooldown || getCenterX() < 0 || getCenterX() > screenWidth) { return null; }
 
         shootCounter = 0;
 

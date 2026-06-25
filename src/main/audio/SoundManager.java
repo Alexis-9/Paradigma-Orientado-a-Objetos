@@ -68,8 +68,6 @@ public class SoundManager implements AudioPlayer {
      */
     @Override
     public void playBackground(Sound sound) {
-        stopBackground();
-
         if (muted) {
             return;
         }

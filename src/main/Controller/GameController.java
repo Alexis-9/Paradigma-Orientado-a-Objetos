@@ -27,20 +27,6 @@ public class GameController {
     private final InputSource input;
     private final AudioPlayer audio;
 
-    /**
-     * Returns whether the audio system is currently muted.
-     *
-     * POST:
-     * - Returns true if audio is muted.
-     * - Returns false if audio is enabled.
-     * - No game state is modified.
-     *
-     * @return true if audio is muted; false otherwise
-     */
-    public boolean isAudioMuted() {
-        return audio.isMuted();
-    }
-
     public GameController(InputSource input, AudioPlayer audio) {
         this.input = input;
         this.audio = audio;
@@ -188,7 +174,7 @@ public class GameController {
         for (Drone drone : squadron.getDrones()) {
             int explosionY = TOP_BOUND + (int)(Math.random() * (SCREEN_HEIGHT - TOP_BOUND));
 
-            Missile missile = drone.tryShoot(currentLevel.getMissileSpeed(), currentLevel.getExplosionSize(), explosionY);
+            Missile missile = drone.tryShoot(currentLevel.getMissileSpeed(), currentLevel.getExplosionSize(), explosionY, SCREEN_WIDTH);
             if (missile != null) {
                 missiles.add(missile);
                 audio.play(Sound.SHOOT);
@@ -329,6 +315,18 @@ public class GameController {
      * - Game state is set to RUNNING.
      */
     private void resume() { gameState = GameState.RUNNING; }
+
+    /**
+     * Returns whether the audio system is currently muted.
+     *
+     * POST:
+     * - Returns true if audio is muted.
+     * - Returns false if audio is enabled.
+     * - No game state is modified.
+     *
+     * @return true if audio is muted; false otherwise
+     */
+    public boolean isAudioMuted() { return audio.isMuted(); }
 
     /**
      * Getters.
