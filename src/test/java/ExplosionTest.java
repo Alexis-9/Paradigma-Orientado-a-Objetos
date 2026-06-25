@@ -50,7 +50,7 @@ class ExplosionTest {
     @Test
     void resolveImpact_explosionTouchingHitbox_isLethal() {
         Plane plane = new Plane(0, 0, 50, 50);
-        Explosion explosion = new Explosion(10, 25, 150); // exactamente sobre el borde de la hitbox
+        Explosion explosion = new Explosion(10, 25, 150); // exactly on the hitbox border
 
         ExplosionResult result = explosion.resolveImpact(plane);
 
@@ -59,7 +59,7 @@ class ExplosionTest {
 
     @Test
     void resolveImpact_farDistance_givePointsNoDamage() {
-        Plane plane = new Plane(175, 175, 50, 50); // Distance around 282
+        Plane plane = new Plane(175, 175, 50, 50); // Distance around 264
         Explosion explosion = new Explosion(0, 0, 150);
 
         ExplosionResult result = explosion.resolveImpact(plane);
@@ -71,7 +71,7 @@ class ExplosionTest {
 
     @Test
     void resolveImpact_mediumDistance_lowDamage() {
-        Plane plane = new Plane(75, -25, 50, 50); // Distance around 100
+        Plane plane = new Plane(-25, -180, 50, 50); // Distance around 137
         Explosion explosion = new Explosion(0, 0, 150);
 
         ExplosionResult result = explosion.resolveImpact(plane);
@@ -83,7 +83,7 @@ class ExplosionTest {
 
     @Test
     void resolveImpact_closeDistance_highDamage() {
-        Plane plane = new Plane(25, -25, 50, 50); // Distance around 50
+        Plane plane = new Plane(25, -25, 50, 50); // Distance around 42
         Explosion explosion = new Explosion(0, 0, 150);
 
         ExplosionResult result = explosion.resolveImpact(plane);
@@ -95,7 +95,7 @@ class ExplosionTest {
 
     @Test
     void resolveImpact_veryCloseDistance_isLethal() {
-        Plane plane = new Plane(-15, -25, 50, 50); // Distance around 10
+        Plane plane = new Plane(-15, -25, 50, 50); // Distance around 2
         Explosion explosion = new Explosion(0, 0, 150);
 
         ExplosionResult result = explosion.resolveImpact(plane);

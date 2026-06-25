@@ -9,11 +9,12 @@ The plane moves along the lower part of the screen while drones fly across the t
 
 ### Controls
 
-| Key | Action |
-|---|---|
-| `W A S D` or arrow keys | Move the plane |
-| `ESC` | Pause / resume |
-| `ENTER` | Restart after game over |
+| Key                     | Action                  |
+|-------------------------|-------------------------|
+| `W A S D` or arrow keys | Move the plane          |
+| `ESC`                   | Pause / resume          |
+| `ENTER`                 | Restart after game over |
+| `M`                     | Mute                    |
 
 ### Rules
 

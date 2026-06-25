@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Main {
 
 
-    /**SW
+    /**
      * Starts the game and graphics.
      * @param args
      */
@@ -24,9 +24,6 @@ public class Main {
     }
 
     // Instrucciones
-    // Agregar texto en el centro de la pantalla al pasar de nivel
-    // Adaptar tests
     // Botones en menu
-    // Borrar star y starfield y todas sus implementaciones
 
 }

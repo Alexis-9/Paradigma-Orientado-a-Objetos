@@ -9,7 +9,9 @@ public enum Images {
     LEVEL_2("/main/Images/Background/level2.png"),
     LEVEL_3("/main/Images/Background/level3.png"),
     LEVEL_4("/main/Images/Background/level4.png"),
-    LEVEL_5("/main/Images/Background/level5.png");
+    LEVEL_5("/main/Images/Background/level5.png"),
+
+    GAME_OVER("/main/Images/Background/gameOver.png");
 
     private final String path;
 

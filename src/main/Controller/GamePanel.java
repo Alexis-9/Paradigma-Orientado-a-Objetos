@@ -67,6 +67,10 @@ public class GamePanel extends JPanel {
         drawGame(g);
         drawHud(g);
 
+        if (controller.isLevelUpVisible()) {
+            drawLevelUp(g, w, h);
+        }
+
         if (controller.getGameState() == GameState.PAUSED) {
             drawPause(g, w, h);
         }
@@ -80,7 +84,8 @@ public class GamePanel extends JPanel {
                 Images.LEVEL_2,
                 Images.LEVEL_3,
                 Images.LEVEL_4,
-                Images.LEVEL_5
+                Images.LEVEL_5,
+                Images.GAME_OVER
         };
 
         for (Images image : levelBackgrounds) {
@@ -202,6 +207,14 @@ public class GamePanel extends JPanel {
     }
 
     private void drawGameOver(Graphics g, int w, int h) {
+        Image background = backgrounds.get(Images.GAME_OVER);
+        if (background != null) {
+            g.drawImage(background, 0, 0, w, h, null);
+        } else {
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, w, h);
+        }
+
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 48));
         g.drawString("GAME OVER", w / 2 - 150, h / 2);
@@ -216,5 +229,11 @@ public class GamePanel extends JPanel {
         g.setColor(Color.YELLOW);
         g.setFont(new Font("Arial", Font.BOLD, 48));
         g.drawString("PAUSA", w / 2 - 80, h / 2);
+    }
+
+    private void drawLevelUp(Graphics g, int w, int h) {
+        g.setColor(Color.BLUE);
+        g.setFont(new Font("Arial", Font.BOLD, 48));
+        g.drawString("Nivel " + controller.getCurrentLevel().getLevelNumber(), w/2 -150, h/2);
     }
 }

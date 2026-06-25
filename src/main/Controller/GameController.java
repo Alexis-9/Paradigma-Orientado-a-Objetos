@@ -13,6 +13,8 @@ public class GameController {
     public static final int SCREEN_WIDTH = TILE_SIZE * 16;   // 768
     public static final int SCREEN_HEIGHT = TILE_SIZE * 16;  // 768
     private static final int TOP_BOUND = 200;
+    private static final float LEVEL_UP_DURATION = 2.0f; // segundos que dura el cartel
+    private float levelUpTimer = 0f;
 
     private GameState gameState = GameState.MENU;
 
@@ -101,7 +103,6 @@ public class GameController {
     public void update(float delta) {
         if (input.consumeMutePress()) {
             audio.toggleMute();
-
             if (!audio.isMuted() && gameState == GameState.RUNNING) {
                 audio.playBackground(Sound.BACKGROUND);
             }
@@ -138,6 +139,9 @@ public class GameController {
         movementInput(delta);
         squadron.update(delta);
         dronesShoot();
+        if (levelUpTimer > 0f) {
+            levelUpTimer -= delta;
+        }
         updateMissiles(delta);
         checkNextLevel();
     }
@@ -291,20 +295,22 @@ public class GameController {
      * Checks if current level is completed and advances if necessary.
      *
      * POST:
-     * - If level is finished:
-     *   - Level is incremented.
-     *   - Player receives bonus score.
-     *   - New level is initialized.
-     *   - Next level sound is played.
+     * - If the level is finished:
+     *   - The level counter is advanced and the next level starts immediately.
+     *   - The player receives bonus score and the extra-life check runs.
+     *   - The level-up banner is shown for a few seconds while play continues.
+     *   - The next-level sound is played.
      */
     private void checkNextLevel() {
 
-        if (currentLevel.levelFinished(squadron.getDrones().isEmpty(),squadron.getDronesRemaining() == 0) && missiles.isEmpty()) {
+        if (currentLevel.levelFinished(squadron.getDrones().isEmpty(),
+                squadron.getDronesRemaining() == 0) && missiles.isEmpty()) {
             currentLevel.nextLevel();
             player.addScore(300);
             player.checkExtraLife(currentLevel.getLevelNumber());
             startLevel();
             audio.play(Sound.NEXT_LEVEL);
+            levelUpTimer = LEVEL_UP_DURATION;
         }
     }
 
@@ -333,4 +339,5 @@ public class GameController {
     public Squadron getSquadron() { return squadron; }
     public Level getCurrentLevel() { return currentLevel; }
     public List<Missile> getMissiles() { return missiles; }
+    public boolean isLevelUpVisible() { return levelUpTimer > 0f; }
 }
