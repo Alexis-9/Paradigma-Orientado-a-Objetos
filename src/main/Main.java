@@ -9,7 +9,6 @@ public class Main {
 
     /**SW
      * Starts the game and graphics.
-     *
      * @param args
      */
     public static void main(String[] args) {
