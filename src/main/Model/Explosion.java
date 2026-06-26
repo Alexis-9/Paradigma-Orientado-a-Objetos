@@ -21,6 +21,12 @@ public class Explosion extends Entity {
         setDefaultValues();
     }
 
+    /**
+     * Initializes the default duration and current frame of the Explosion for drawing.
+     *
+     * POST:
+     * - Duration is set to 30 and currentFrame to 0 after initialization.
+     */
     @Override
     public void setDefaultValues() {
         duration = 30;
