@@ -1,4 +1,3 @@
-
 # Sky Defense
 
 A 2D arcade game built in Java with Swing for the **Object-Oriented Paradigm** course. You control a plane that must dodge missiles launched by squadrons of enemy drones, surviving as many levels as possible.
@@ -39,33 +38,43 @@ The project follows an **MVC-style** separation:
 ```text
 src/
 ├── main/
-│   ├── Main.java              # Entry point
+│   ├── Main.java                  # Entry point
 │   ├── Controller/
-│   │   ├── GameController     # Core game logic (states, levels, collisions)
-│   │   ├── GamePanel          # Rendering and 60 FPS game loop (Swing Timer + delta time)
-│   │   ├── KeyHandler         # Keyboard input
-│   │   └── InputSource        # Input interface (enables testing without a real keyboard)
+│   │   ├── GameController         # Core game logic (states, levels, collisions)
+│   │   ├── GamePanel              # Rendering and 60 FPS game loop (Swing Timer + delta time)
+│   │   ├── KeyHandler             # Keyboard input (implements InputSource)
+│   │   └── InputSource            # Input interface (enables testing without a real keyboard)
 │   ├── Model/
-│   │   ├── Entity             # Abstract base class (position, size, speed, hitbox)
-│   │   ├── Plane              # Player's plane (movement, energy)
-│   │   ├── Drone / Squadron   # Enemies and their management (spawning, limits, direction)
-│   │   ├── Missile / Explosion # Projectiles and distance-based impact resolution
-│   │   ├── Player             # Lives, score and extra lives
-│   │   ├── Level              # Difficulty progression
-│   │   └── Collidable / Drawable / Updatable  # Behavior interfaces
+│   │   ├── Entity                 # Abstract base class (position, size, hitbox)
+│   │   ├── MovableEntity          # Abstract movable entity (speed, direction, movement)
+│   │   ├── Plane                  # Player's plane (movement, energy)
+│   │   ├── Drone / Squadron       # Enemies and their management (spawning, limits, direction)
+│   │   ├── Missile / Explosion    # Projectiles and distance-based impact resolution
+│   │   ├── ExplosionResult        # Immutable result of an explosion (score, damage, lethality)
+│   │   ├── Player                 # Lives, score and extra lives
+│   │   ├── Level                  # Difficulty progression
+│   │   ├── GameState              # Game state enum (menu, running, paused, game over)
+│   │   ├── Direction              # Movement direction enum
+│   │   ├── Images                 # Image/sprite keys enum
+│   │   └── Collidable             # Collision interface (provides hitbox bounds)
+│   ├── View/
+│   │   ├── GameView               # In-game rendering helpers
+│   │   └── MenuView               # Menu rendering (title, play text, sound status)
 │   └── audio/
-│       ├── SoundManager       # Sound effects and music playback
-│       ├── AudioPlayer        # Audio interface (enables testing without real sound)
-│       └── Sound              # Enum of game sounds
+│       ├── SoundManager           # Sound effects and music playback (implements AudioPlayer)
+│       ├── AudioPlayer            # Audio interface (enables testing without real sound)
+│       └── Sound                  # Enum of game sounds
 └── test/
-└── java/                  # Unit tests (JUnit 5)
+    └── java/                      # Unit tests (JUnit 5)
 ```
 
 ### Design Decisions
 
+- **Entity hierarchy**: `Entity` is the abstract base (position, size, hitbox); `MovableEntity` extends it adding speed and direction; `Plane`, `Drone` and `Missile` specialize from there. Shared behavior lives in the base classes instead of being duplicated.
 - **Delta time**: movement is calculated using the time elapsed between frames rather than fixed ticks, keeping speed consistent regardless of frame rate.
 - **Dependency injection**: `GameController` receives `InputSource` and `AudioPlayer` through its constructor, decoupling game logic from the real keyboard and audio system.
 - **Decoupled impact logic**: `Explosion.resolveImpact()` returns an immutable `ExplosionResult` (score, damage, lethality) instead of modifying state directly.
+- **Collision via interface**: any entity that can collide implements `Collidable`, which exposes its hitbox bounds without coupling collision checks to concrete types.
 
 ## Tests
 
