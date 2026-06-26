@@ -20,7 +20,6 @@ public class Main {
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setIconImage(new ImageIcon("main/Images/Plane/Skins/DefaultSkin.png").getImage());
         frame.setVisible(true);
 
     }
