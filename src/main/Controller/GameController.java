@@ -12,7 +12,7 @@ public class GameController {
     public static final int TILE_SIZE = 48;
     public static final int SCREEN_WIDTH = TILE_SIZE * 16;   // 768
     public static final int SCREEN_HEIGHT = TILE_SIZE * 16;  // 768
-    private static final int TOP_BOUND = 200;
+    private static final int TOP_BOUND = 250;
     private static final float LEVEL_UP_DURATION = 2.0f; // segundos que dura el cartel
     private float levelUpTimer = 0f;
 

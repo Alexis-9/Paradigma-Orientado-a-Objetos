@@ -26,6 +26,7 @@ public class Level {
      * - levelNumber is incremented by 1.
      * - droneSpeed increases by 15%.
      * - missileSpeed increases by 15%.
+     * - explosionSize increases by 15%.
      * - shootCooldown decreases by 15%.
      */
     public void nextLevel() {

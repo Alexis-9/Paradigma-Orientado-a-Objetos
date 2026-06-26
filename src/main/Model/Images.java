@@ -2,7 +2,7 @@ package main.Model;
 
 public enum Images {
     DRONE("/main/Images/Drone/Drone.png"),
-    PLANE("/main/Images/Plane/Skins/DefaultSkin.png"),
+    PLANE("/main/Images/Plane/Plane.png"),
     MISSILE("/main/Images/Missile/Missile.png"),
 
     LEVEL_1("/main/Images/Background/level1.png"),
