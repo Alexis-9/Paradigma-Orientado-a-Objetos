@@ -17,16 +17,14 @@ public class Explosion extends Entity {
         this.y = y;
         this.size = size;
         radius = (int) size;
-        duration = 30;
-        currentFrame = 0;
 
         setDefaultValues();
     }
 
-
     @Override
     public void setDefaultValues() {
-
+        duration = 30;
+        currentFrame = 0;
     }
 
     /**
